@@ -32,6 +32,23 @@
         <link href="css/materialize.min.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="js/materialize.min.js" type="text/javascript"></script>
+        <script>
+            window.addEventListener("message", recieveMessage, false);
+            
+            function recieveMessage(event) {
+                var data = JSON.parse(event.data);
+                
+                switch(data.mode) {
+                    case 'reload':
+                        if (data.href === ".") {
+                            window.location.reload();
+                        } else {
+                            window.location = data.href;
+                        }
+                    break;
+                }
+            }
+        </script>
     </head>
     <body>
         <div class="container">

@@ -11,23 +11,21 @@
     Usuario user = new Usuario(-1);
 
     if (session.getAttribute("user") == null) {
-        request.setAttribute("title", "Sesión no iniciada");
-        request.setAttribute("message", "Iniciar sesión para continuar...");
-        request.setAttribute("redirect", ".");
-        request.setAttribute("type", "error");
+        request.setAttribute("preset", "login");
 
-        response.sendRedirect("/iSalon/error.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+        dispatcher.forward(request, response);
+        return;
     } else {
         user = new Usuario((Integer) session.getAttribute("user"));
         user.validarUsuarioId();
 
         if (!user.isValid()) {
-            request.setAttribute("title", "No eres administrador");
-            request.setAttribute("message", "Es necesario ser administrador para accesar!");
-            request.setAttribute("redirect", ".");
-            request.setAttribute("type", "error");
+            request.setAttribute("preset", "login");
 
-            response.sendRedirect("/iSalon/error.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+            return;
         }
     }
 %>

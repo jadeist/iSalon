@@ -34,7 +34,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>iSalon - Agregar Usuario</title>
+        <title>iSalon - Agregar Grupo</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -93,63 +93,16 @@
                 <div class="divider"></div>
                 <div class="section">
                     <div class="input-field">
-                        <i class="material-icons prefix">account_circle</i>
+                        <i class="material-icons prefix">group_work</i>
                         <label for="username">Nombre de Usuario</label>
                         <input id="username" type="text" name="username" />
-                    </div>
-                    <div class="input-field">
-                        <i class="material-icons prefix">face</i>
-                        <label for="name">Nombre</label>
-                        <input id="name" type="text" name="name" />
-                    </div>
-                </div>
-                
-                <div class="divider"></div>
-                <div class="section">
-                    <div class="input-field">
-                        <select name="type">
-                            <%
-                                String[] tipos = new String[] {
-                                    "Alumno",
-                                    "Profesor",
-                                    "Prefecto",
-                                    "Adminstrador"
-                                };
-
-                                int n = tipos.length;
-                                for(int i=0; i<n; ++i) {
-                                    out.println("<option value='" + i + "'>"
-                                        + tipos[i]
-                                        + "</option>");
-                                }
-                            %>
-                        </select>
-                        <label>Selecciona el Tipo de Usuario</label>
-                    </div>
-                </div>
-
-                <div class="divider"></div>
-                <div class="section">
-                    <div class="input-field">
-                        <i class="material-icons prefix">vpn_key</i>
-                        <input type="password" id="pass1" />
-                        <label for="pass1">Nueva Contraseña</label>
-                    </div>
-                    <div class="input-field">
-                        <i class="material-icons prefix">done</i>
-                        <input class="validate" type="password" id="pass2" disabled name="pass" />
-                        <label for="pass2"
-                               data-error="Las contraseñas deben coincidir"
-                               data-success="Las contraseñas coinciden">
-                            Confirma tu contraseña
-                        </label>
                     </div>
                 </div>
 
                 <div class="divider"></div>
                 <button class="btn" type="submit" >
                     <i class="material-icons left">add_circle</i>
-                    Agregar Usuario
+                    Agregar Grupo
                 </button>
 
             </form>

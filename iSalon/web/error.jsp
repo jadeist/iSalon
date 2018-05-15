@@ -8,16 +8,30 @@
 <%
     String title = request.getAttribute("title") != null ? (String) request.getAttribute("title") : "Error";
     String message = request.getAttribute("message") != null ? (String)  request.getAttribute("message") : "Hubo algún error";
-    String redirect = request.getAttribute("redirect") != null ? (String)  request.getAttribute("redirect") : ".";
+    String redirect = request.getAttribute("redirect") != null ? (String)  request.getAttribute("redirect") : "/iSalon/";
     String type = request.getAttribute("type") != null ? (String) request.getAttribute("type") : "error";
+    String preset = request.getAttribute("preset") != null ? (String) request.getAttribute("preset") : "";
+    
+    System.out.println(request.getAttribute("preset") == null);
+    
+    if (preset.equals("adminRights")) {
+        title = "Permisos Necesarios!";
+        message = "Permisos de administrador necesarios";
+    } else if(preset.equals("login")) {
+        title = "Sesión no Iniciada";
+        message = "Iniciar sesión para continuar";
+    } else if(preset.equals("fields")) {
+        title = "Datos insuficientes";
+        message = "Todos los datos deberán de proporcionarse";
+    }
 %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>iSalon - <%=title%></title>
-        <link href="swal/sweetalert2.css" rel="stylesheet" type="text/css"/>
-        <script src="swal/sweetalert2.js" type="text/javascript"></script>
+        <link href="/iSalon/swal/sweetalert2.css" rel="stylesheet" type="text/css"/>
+        <script src="/iSalon/swal/sweetalert2.js" type="text/javascript"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         
         <style>
@@ -32,6 +46,7 @@
                     text: "<%=message%>",
                     type: "<%=type%>"
                 }).then(function() {
+                    window.parent.postMessage("'href': '<%=redirect%>', 'mode':'reload'", "*");
                     window.location = "<%=redirect%>";
                 });
             });

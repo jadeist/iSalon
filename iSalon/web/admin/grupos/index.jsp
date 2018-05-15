@@ -30,23 +30,10 @@
         }
     }
     
-    String[] tipos = new String[] {
-        "Alumno",
-        "Profesor",
-        "Prefecto",
-        "Adminstrador"
-    };
-    String[] iconTipo = new String[] {
-        "create",
-        "book",
-        "assignment",
-        "star_border"
-    };
-    
     cDatos db = new cDatos();
     db.conectar();
     
-    ResultSet res = db.consulta("select * from usuarios order by tipo asc");
+    ResultSet res = db.consulta("select * from grupos order by nombre asc");
     
     
 %>
@@ -54,7 +41,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>iSalon - Usuarios</title>
+        <title>iSalon - Grupos</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -120,42 +107,19 @@
     </head>
     <body>
         <div class="container">
-            <h2>Usuarios</h2>
+            <h2>Grupos</h2>
 
-            <div class="section">
-                <div class="input-field">
-                    <select multiple id="selType">
-                        <%  
-                            int n = tipos.length;
-                            for(int i=0; i<n; ++i) {
-                                out.println("<option selected value='" + i + "'>"
-                                        + tipos[i]
-                                        + "<i class='material-icons prefix'>"
-                                        + "</i>"
-                                        + "</option>");
-                            }
-                        %>
-                    </select>
-                    <label>Selecciona los tipos de usuario a desplegar: </label>
-                </div>
-            </div>
-            
             <table class="highlight">
                 <thead>
                     <tr>
-                        <td>Nombre</td>
-                        <td>Tipo de usuario</td>
-                        <td>Acciones</td>
+                        <td>Nombre de Grupo</td>
                     </tr>
                 </thead>
                 <%
                     while(res.next()) {
                         out.println("<tr class='field'>");
                         out.println("<td class='fieldName'>");
-                        out.println(res.getString("name"));
-                        out.println("</td>");
-                        out.println("<td class='fieldType'>");
-                        out.println(tipos[res.getInt("tipo")]);
+                        out.println(res.getString("nombre"));
                         out.println("</td>");
                         out.println("<td>");
                         out.println("<input class='hidId' type='hidden' value='" + res.getInt("id") + "' />");
@@ -168,8 +132,8 @@
                 %>
             </table>
             <br><br>
-            <a href="agregarDatos.jsp" class="btn-floating btn-large waves-effect waves-light blue" >
-                <i class="material-icons">person_add</i>
+            <a href="agregarGrupo.jsp" class="btn-floating btn-large waves-effect waves-light blue" >
+                <i class="material-icons">group_add</i>
             </a>
             <br><br><br>
             <div class="divider"></div>

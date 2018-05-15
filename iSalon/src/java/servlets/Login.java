@@ -5,25 +5,27 @@
  */
 package servlets;
 
+import ctrl.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import database.cDatos;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author A
  */
-@WebServlet(name = "agregar", urlPatterns = {"/admin/usuarios/agregar"})
-public class agregar extends HttpServlet {
+@WebServlet(name = "login", urlPatterns = {"/login"})
+public class Login extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,43 +41,39 @@ public class agregar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String username = request.getParameter("username") != null ? request.getParameter("username") : "";
-            String name = request.getParameter("name") != null ? request.getParameter("name") : "";
-            int pass = request.getParameter("pass") != null ? request.getParameter("pass").hashCode() : "1234".hashCode();
-            int type = request.getParameter("type") != null ? Integer.parseInt(request.getParameter("type")) : 0;
+            boolean isValid = false;
+            int id = -1;
+            int type = 0;
+            String message = "";
+            String title = "";
             
-            cDatos db = new cDatos();
-            db.conectar();
+            ResultSet res;
+            String username = request.getParameter("username");
+            int pass = request.getParameter("pass").hashCode();
             
-            db.setPreparedStatement("call crearUsuario(?, ?, ?, ?)");
-            db.setPreparedVariables(new String[][] {
-                {"String", username},
-                {"String", name},
-                {"int", String.valueOf(pass)},
-                {"int", String.valueOf(type)}
-            });
-            ResultSet res = db.runPreparedQuery();
-            
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>iSalon - Agregar Usuario</title>");
-            out.println("<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>");
-            out.println("<link href='../../css/materialize.min.css' rel='stylesheet' type='text/css'/>");
-            out.println("<script type='text/javascript' src='https://code.jquery.com/jquery-3.2.1.min.js'></script>");
-            out.println("<script src='../../js/materialize.min.js' type='text/javascript'></script>");
-            out.println("</head>");
-            out.println("<body>");
-            while(res.next()) {
-                out.println(res.getString("message"));
+            Usuario user = new Usuario(username, pass);
+            try {
+                user.validarUsuarioCred();
+                
+                if(user.isValid()) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("user", user.getId());
+                    
+                    response.sendRedirect("cuenta/");
+                } else {
+                    request.setAttribute("title", "Credenciales incorrectas");
+                    request.setAttribute("message", "Intenta nuevamente");
+                    request.setAttribute("redirect", ".");
+                    request.setAttribute("type", "warning");
+                    
+                    
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                    dispatcher.forward(request, response);
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
-            out.println("<a href='.'>Regresar</a>");
-            out.println("</body>");
-            out.println("</html>");
-            
-            db.cierraConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(agregar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -91,7 +89,7 @@ public class agregar extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.getWriter().println("Cannot doGet!");
+        response.sendRedirect(".");
     }
 
     /**

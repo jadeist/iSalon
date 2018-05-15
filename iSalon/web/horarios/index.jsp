@@ -4,34 +4,55 @@
     Author     : Laxelott
 --%>
 
+<%@page import="ctrl.Usuario"%>
 <%@page import="ctrl.AuxFunctions"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="database.cDatos"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    // Checar si tiene sesion iniciada y cual es su ID
-    int userId = 1;
+    // Validacion de usuario
+    Usuario user = new Usuario(-1);
 
+    if (session.getAttribute("user") == null) {
+        request.setAttribute("preset", "login");
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+        dispatcher.forward(request, response);
+        return;
+    } else {
+        user = new Usuario((Integer) session.getAttribute("user"));
+        user.validarUsuarioId();
+
+        if (!user.isValid()) {
+            request.setAttribute("preset", "login");
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+    }
+
+    int userId = user.getId();
     cDatos db = new cDatos();
     ResultSet res;
     String grupo;
-    
+
     /*
         Lunes       7 - 20
         Martes      7 - 20
         Miercoles   7 - 20
         Jueves      7 - 20
         Viernes     7 - 20
-    */
-    String[][] horario = new String[][] {
-        {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "", "", ""},
-        {"0", "3", "5", "w", "", "", "2", "", "", "", "", "", ""},
-        {"a", "3", "4", "d", "", "", "", "", "", "", "", "", ""},
-        {"0", "2", "3", "s", "", "", "", "", "", "", "", "", ""},
-        {"1", "1", "2", "", "", "", "", "", "", "", "", "", ""}
+     */
+    String[][] horario = new String[][]{
+        {"", "", "", "", "", "", "", "", "", "", "", "", ""},
+        {"", "", "", "", "", "", "", "", "", "", "", "", ""},
+        {"", "", "", "", "", "", "", "", "", "", "", "", ""},
+        {"", "", "", "", "", "", "", "", "", "", "", "", ""},
+        {"", "", "", "", "", "", "", "", "", "", "", "", ""}
     };
-    
-    String[] horas = new String[] {
+
+    String[] horas = new String[]{
         "7 - 8",
         "8 - 9",
         "9 - 10",
@@ -46,15 +67,14 @@
         "18 - 19",
         "19 - 20"
     };
-    
-    
+
     db.conectar();
-    
-    for(int i=0; i<5; ++i) {
+
+    for (int i = 0; i < 5; ++i) {
         res = db.consulta("select  grupos.nombre as 'grupo',  salones.nombre as 'salon',  horarios.nombre as 'clase',  horarios.horaInicio, horarios.horaFinal, horarios.dia, horarios.color from horarios  inner join cathorariogrupo  on cathorariogrupo.idHor = horarios.id inner join cathorariosalon  on cathorariosalon.idHor = horarios.id   inner join salones  on salones.id = cathorariosalon.idSal inner join grupos  ON grupos.id = cathorariogrupo.idGrp   inner join catgrupousuario  on catgrupousuario.idGrp "
                 + "where catgrupousuario.idUsr = " + userId + "  and dia = " + i + "   order by horarios.horaInicio asc;");
-        
-        while(res.next()) {
+
+        while (res.next()) {
             horario[i] = AuxFunctions.fillArray(
                     horario[i],
                     res.getString("clase") + " -[" + res.getString("salon") + "]",
@@ -63,7 +83,7 @@
             );
         }
     }
-    
+
     db.cierraConexion();
 
 %>
@@ -80,7 +100,7 @@
     </head>
     <body>
         <div class="container">
-            <table>
+            <table class="responsive-table striped centered">
                 <thead>
                     <tr>
                         <td>Horas</td>
@@ -97,19 +117,19 @@
                         int m = 13;
                         String[][] tableRows = new String[m][n];
 
-                        for(int i=0; i<n; ++i) {
-                            for(int j=0; j<m; ++j) {
+                        for (int i = 0; i < n; ++i) {
+                            for (int j = 0; j < m; ++j) {
                                 tableRows[j][i] = horario[i][j];
                             }
                         }
 
-                        for(int i=0; i<m; ++i) {
+                        for (int i = 0; i < m; ++i) {
                             out.println("<tr>");
 
                             out.println("<th>");
                             out.println(horas[i]);
                             out.println("</th>");
-                            for(int j=0; j<n; ++j) {
+                            for (int j = 0; j < n; ++j) {
                                 out.println("<td>");
                                 out.println(tableRows[i][j]);
                                 out.println("</td>");
