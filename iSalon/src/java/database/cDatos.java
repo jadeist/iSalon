@@ -94,7 +94,7 @@ public class cDatos {
             if(this.SQLite) {
                 this.conn = DriverManager.getConnection("jdbc:sqlite:"+this.SQLiteDbPath+"?useUnicode=true&characterEncoding=utf-8");
             } else {
-                this.conn = DriverManager.getConnection(this.urlBD + "?user=" + this.usrBD + "&password=" + this.passBD);
+                this.conn = DriverManager.getConnection(urlBD, usrBD, passBD);
             }
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException err) {
             Logger.getLogger(AgregarUsuario.class.getName()).log(Level.SEVERE, null, err);
