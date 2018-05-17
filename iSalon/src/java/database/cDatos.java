@@ -12,6 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import servlets.AgregarUsuario;
 
 /**
  *
@@ -43,6 +46,7 @@ public class cDatos {
         this.usrBD = "root";
         this.passBD = "n0m3l0";
         this.urlBD = "jdbc:mysql://127.0.0.1:3306/iSalon";
+        
         // com.mysql.jdbc.Driver
         // org.sqlite.JDBC
         this.driverClassName = "com.mysql.jdbc.Driver";
@@ -90,10 +94,10 @@ public class cDatos {
             if(this.SQLite) {
                 this.conn = DriverManager.getConnection("jdbc:sqlite:"+this.SQLiteDbPath+"?useUnicode=true&characterEncoding=utf-8");
             } else {
-                this.conn = DriverManager.getConnection(this.urlBD, this.usrBD, this.passBD);
+                this.conn = DriverManager.getConnection(this.urlBD + "?user=" + this.usrBD + "&password=" + this.passBD);
             }
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException err) {
-            System.out.println("Error " + err.getMessage());
+            Logger.getLogger(AgregarUsuario.class.getName()).log(Level.SEVERE, null, err);
         }
     }
     
