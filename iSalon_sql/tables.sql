@@ -3,22 +3,10 @@ drop database if exists iSalon;
 create database iSalon;
 use iSalon;
 
-drop table if exists cathorariogrupo;
-drop table if exists catGrupoUsuario;
-drop table if exists catHorarioSalon;
-drop table if exists catMenuContent;
-drop table if exists usuarios;
-drop table if exists horarios;
-drop table if exists salones;
-drop table if exists grupoHorarios;
-drop table if exists grupos;
-drop table if exists usuarios;
-drop table if exists menuContent;
-
-
 
 # Creación
 
+drop table if exists horarios;
 create table horarios (
 	id int not null auto_increment,
 	nombre nvarchar(300) not null default 'SIN ASIGNAR',
@@ -30,6 +18,7 @@ create table horarios (
 	primary key (id)
 );
 
+drop table if exists salones;
 create table salones(
 	id int not null auto_increment,
 	nombre nvarchar(250) not null,
@@ -37,6 +26,7 @@ create table salones(
 	primary key (id)
 );
 
+drop table if exists grupoHorarios;
 create table grupoHorarios(
 	id int not null AUTO_INCREMENT,
 	color nvarchar(10) not null default '#000000',
@@ -44,6 +34,7 @@ create table grupoHorarios(
 	primary key (id)
 );
 
+drop table if exists grupos;
 create table grupos(
 	id int not null AUTO_INCREMENT,
 	nombre nvarchar(250) not null unique, 
@@ -51,6 +42,7 @@ create table grupos(
 	primary key (id)
 );
 
+drop table if exists usuarios;
 create table usuarios(
 	id int not null primary key auto_increment,
 	username nvarchar(250) unique not null,
@@ -63,6 +55,7 @@ create table usuarios(
 # 2 - prefecto
 # 3 - administrador
 
+drop table if exists menuContent;
 create table menuContent(
 	id int not null primary key,
 	name nvarchar(100) not null,
@@ -73,6 +66,16 @@ create table menuContent(
 	active int not null default 0
 );
 
+drop table if exists messages;
+create table messages(
+	id int not null auto_increment,
+	message nvarchar(1000),
+	fecha timestamp default CURRENT_TIMESTAMP(),
+	
+	primary key(id)
+);
+
+drop table if exists catMenuContent;
 create table catMenuContent(
 	idRelMenuUsr int not null primary key AUTO_INCREMENT,
 	idMenu int not null,
@@ -81,6 +84,7 @@ create table catMenuContent(
 	foreign key (idMenu) references menuContent(id)
 );
 
+drop table if exists catHorarioSalon;
 create table catHorarioSalon(
 	id int not null auto_increment,
 	idHor int not null,
@@ -91,6 +95,7 @@ create table catHorarioSalon(
 	foreign key (idSal) references salones(id)
 );
 
+drop table if exists catHorarioGrupo;
 create table catHorarioGrupo (
 	id int not null auto_increment,
 	idHor int not null,
@@ -101,6 +106,7 @@ create table catHorarioGrupo (
 	foreign key (idGrp)	references grupos(id)
 );
 
+drop table if exists catGrupoUsuario;
 create table catGrupoUsuario(
 	id int not null AUTO_INCREMENT,
 	idUsr int not null,

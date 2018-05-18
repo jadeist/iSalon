@@ -57,6 +57,20 @@
         <link href="../css/materialize.min.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="../js/materialize.min.js" type="text/javascript"></script>
+        
+        <script>
+            function inIframe() {
+                try {
+                    return window.self !== window.top;
+                } catch (e) {
+                    return true;
+                }
+            }
+            
+            if(inIframe()) {
+                window.location.href = $("iframe").get()[0].contentWindow.location.href;
+            }
+        </script>
     </head>
     <body>
         <div class="wrapper">
@@ -83,7 +97,7 @@
             </nav>
             
             <br><br>
-            <iframe name="content" class="frameCuenta" src="inicio.jsp"></iframe>
+            <iframe id="frameContent" name="content" class="frameCuenta" src="inicio.jsp"></iframe>
         </div>
     </body>
 </html>

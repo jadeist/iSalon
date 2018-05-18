@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author A
  */
-@WebServlet(name = "agregar", urlPatterns = {"/admin/usuarios/agregar"})
+@WebServlet(name = "agregar", urlPatterns = {"/admin/grupos/agregar"})
 public class AgregarGrupo extends HttpServlet {
 
     /**

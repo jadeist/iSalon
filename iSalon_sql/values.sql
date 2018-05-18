@@ -11,7 +11,8 @@ delete from grupos;
 delete from horarios;
 
 insert into usuarios(id, username, name, pass, tipo) values
-(10, 'laxelott', 'Axel Treviño', 1510372, 3)
+(10, 'laxelott', 'Axel Treviño', 1510372, 3),
+
 ;
 
 insert into menuContent(id, name, icon, link, target, priority, active) values
@@ -20,7 +21,8 @@ insert into menuContent(id, name, icon, link, target, priority, active) values
 (2, 'Usuarios', 'person', 'admin/usuarios/', 'content', 3, 1),
 (3, 'Modificar Cuenta', 'settings', 'cuenta/cambios/', 'content', 1, 1),
 (4, 'Horarios', 'border_all', 'horarios/', 'content', 2, 1),
-(5, 'Grupos', 'group', 'admin/grupos/', 'content', 3, 1)
+(5, 'Grupos', 'group', 'admin/grupos/', 'content', 3, 1),
+(6, 'Chat', 'chat', 'chat/', 'content', 3, 1)
 ;
 
 insert into catMenuContent(idMenu, typeUsr) values
@@ -47,7 +49,12 @@ insert into catMenuContent(idMenu, typeUsr) values
 (4, 2),
 (4, 3),
 # Grupos
-(5, 3)
+(5, 3),
+# Chat
+(6, 0),
+(6, 1),
+(6, 2),
+(6, 3)
 ;
 
 insert into salones(id, nombre) values

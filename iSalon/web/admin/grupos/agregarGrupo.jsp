@@ -94,7 +94,7 @@
                 <div class="section">
                     <div class="input-field">
                         <i class="material-icons prefix">group_work</i>
-                        <label for="username">Nombre de Usuario</label>
+                        <label for="username">Nombre de Grupo</label>
                         <input id="username" type="text" name="username" />
                     </div>
                 </div>

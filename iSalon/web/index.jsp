@@ -48,6 +48,17 @@
                     break;
                 }
             }
+            
+            function inIframe () {
+                try {
+                    return window.self !== window.top;
+                } catch (e) {
+                    return true;
+                }
+            }
+            if(inIframe()) {
+                window.parent.postMessage("'href': index.jsp, 'mode':'reload'", "*");
+            }
         </script>
     </head>
     <body>
