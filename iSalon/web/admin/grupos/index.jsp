@@ -44,18 +44,17 @@
         <title>iSalon - Grupos</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="../../swal/sweetalert2.css" rel="stylesheet" type="text/css"/>
-        <link href="../../css/materialize.min.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="../../js/materialize.min.js" type="text/javascript"></script>
+        <!--Sweet Alert-->
+        <link href="../../swal/sweetalert2.css" rel="stylesheet" type="text/css"/>
         <script src="../../swal/sweetalert2.js" type="text/javascript"></script>
+        <!--Materialize-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="../../Materialize/materialize.js" type="text/javascript"></script>
+        <link href="../../Materialize/materialize.css" rel="stylesheet" type="text/css"/>
         
         <script>
             $(document).ready(function() {
-                // Initialization
-                $('select').material_select();
-                
                 
                 $("a.btnDel").click(function(ev) {
                     var source = ev.target;
@@ -131,12 +130,13 @@
                     db.cierraConexion();
                 %>
             </table>
-            <br><br>
-            <a href="agregarGrupo.jsp" class="btn-floating btn-large waves-effect waves-light blue" >
-                <i class="material-icons">group_add</i>
-            </a>
             <br><br><br>
-            <div class="divider"></div>
+            
+            <div class="fixed-action-btn">
+                <a href="agregarGrupo.jsp" class="btn-floating btn-large waves-effect waves-light blue" >
+                    <i class="material-icons">group_add</i>
+                </a>
+            </div>
         </div>
     </body>
 </html>

@@ -30,9 +30,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>iSalon - <%=title%></title>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <!--Sweet Alert-->
         <link href="/iSalon/swal/sweetalert2.css" rel="stylesheet" type="text/css"/>
         <script src="/iSalon/swal/sweetalert2.js" type="text/javascript"></script>
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         
         <style>
             body {

@@ -22,27 +22,57 @@
         user.validarUsuarioId();
 
         if (!user.isValid()) {
-           request.setAttribute("preset", "login");
+            request.setAttribute("preset", "login");
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
-        dispatcher.forward(request, response);
-        return;
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+            return;
         }
     }
 
     ResultSet res;
     cDatos db = new cDatos();
+    String links = "";
+    String whiteText = "";
 
     db.conectar();
-    
     db.setPreparedStatement("select menuContent.name, menuContent.link, menuContent.target, menuContent.icon from catMenuContent "
-	+ "inner join menuContent on catMenuContent.idMenu = menuContent.id "
-	+ "where catMenuContent.typeUsr = ? "
-        + "order by menuContent.priority desc");
-    db.setPreparedVariables(new String[][] {
+            + "inner join menuContent on catMenuContent.idMenu = menuContent.id "
+            + "where catMenuContent.typeUsr = ? "
+            + "order by menuContent.priority desc");
+    db.setPreparedVariables(new String[][]{
         {"int", String.valueOf(user.getTipo())}
     });
     res = db.runPreparedQuery();
+
+    String[] tipos = new String[]{
+        "Alumno",
+        "Profesor",
+        "Prefecto",
+        "Adminstrador"
+    };
+    String[] imgUsuarios = new String[]{
+        "student.jpg",
+        "teacher.bmp",
+        "prefect.jpg",
+        "admin.jpg"
+    };
+    
+    while (res.next()) {
+        links += "<li class='waves-effect'>";
+        links += "<a href='/iSalon/" + res.getString("link") + "'";
+        links += " target='" + res.getString("target") + "'";
+        links += "class='sidenav-close'";
+        links += "name='" + res.getString("name") + "'>";
+        links += "<i class='material-icons left'>" + res.getString("icon") + "</i>";
+        links += res.getString("name");
+        links += "</a>";
+        links += "</li>";
+    }
+    
+    db.cierraConexion();
+    
+    whiteText = (user.getTipo() != 0 && user.getTipo() != 2) ? "white-text" : "";
 %>
 <!DOCTYPE html>
 <html>
@@ -51,13 +81,14 @@
         <title>iSalon - Inicio</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="../css/general.css" rel="stylesheet" type="text/css"/>
+        <link href="../css/Background.css" rel="stylesheet" type="text/css"/>
         <link href="../css/menu.css" rel="stylesheet" type="text/css"/>
-        <link href="../css/materialize.min.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="../js/materialize.min.js" type="text/javascript"></script>
-        
+        <!--Materialize-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="../Materialize/materialize.js" type="text/javascript"></script>
+        <link href="../Materialize/materialize.css" rel="stylesheet" type="text/css"/>
+
         <script>
             function inIframe() {
                 try {
@@ -66,37 +97,53 @@
                     return true;
                 }
             }
-            
-            if(inIframe()) {
-                window.location.href = $("iframe").get()[0].contentWindow.location.href;
+
+            if (inIframe()) {
+                window.location.href = $("#frameContent").get()[0].contentWindow.location.href;
             }
+
+            $(document).ready(function () {
+                $(".sidenav").sidenav();
+                
+                $("a").click(function(ev) {
+                    
+                    if(typeof $(ev.target).attr('name') !== 'undefined') {
+                        $("title").html("iSalon - " + $(ev.target).attr('name'));
+                    }
+                });
+            });
         </script>
     </head>
     <body>
         <div class="wrapper">
-            <nav>
+            <nav class="nav-extended">
                 <div class="nav-wrapper">
                     <a href="#" class="brand-logo">iSalon</a>
+                    <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
-                    <ul id="nav-mobile" class="right">
-                        <%
-                            while (res.next()) {
-                                out.println("<li class='waves-effect'>"
-                                        + "<a href='/iSalon/" + res.getString("link") + "'"
-                                        + " target='" + res.getString("target") + "'>"
-                                        + "<i class='material-icons left'>" + res.getString("icon") + "</i>"
-                                        + res.getString("name")
-                                        + "</a>"
-                                    + "</li>");
-                            }
-
-                            db.cierraConexion();
-                        %>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <%=links%>
                     </ul>
                 </div>
+
+                <div class="nav-content hide-on-med-and-down">
+                    <h5><%=user.getNombre()%>, <%=tipos[user.getTipo()]%></h5>
+                </div>
             </nav>
-            
-            <br><br>
+            <ul id="mobile-menu" class="sidenav" style="overflow-y: auto">
+                <li>
+                    <div class="user-view <%=whiteText%>">
+                        <div class="background">
+                            <img class="responsive-img" src="../img/<%=imgUsuarios[user.getTipo()]%>" />
+                        </div>
+                        <h3><%=user.getNombre()%></h3>
+                        <h4><%=tipos[user.getTipo()]%></h4>
+                        <br>
+                    </div>
+                </li>
+                <%=links%>
+            </ul>
+            <a href="index.jsp" target="frameContent"></a>
             <iframe id="frameContent" name="content" class="frameCuenta" src="inicio.jsp"></iframe>
         </div>
     </body>

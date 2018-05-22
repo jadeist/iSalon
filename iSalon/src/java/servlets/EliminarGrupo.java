@@ -6,9 +6,9 @@
 package servlets;
 
 import ctrl.Usuario;
+import database.cDatos;
 import java.io.IOException;
 import java.io.PrintWriter;
-import database.cDatos;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -25,8 +25,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author A
  */
-@WebServlet(name = "AgregarGrupo", urlPatterns = {"/admin/grupos/agregar"})
-public class AgregarGrupo extends HttpServlet {
+@WebServlet(name = "EliminarGrupo", urlPatterns = {"/admin/usuarios/EliminarGrupo"})
+public class EliminarGrupo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,6 +41,7 @@ public class AgregarGrupo extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
             HttpSession session = request.getSession();
 
             // Validacion de usuario
@@ -63,57 +64,41 @@ public class AgregarGrupo extends HttpServlet {
                     return;
                 }
             }
-
+            
             // Inicio
-            if (request.getParameter("name") == null) {
+            
+            if (request.getParameter("id") == null) {
                 request.setAttribute("preset", "fields");
 
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                 dispatcher.forward(request, response);
                 return;
             }
-
-            String name = request.getParameter("name");
-
+                    
             cDatos db = new cDatos();
+            ResultSet res;
+            String id = request.getParameter("id");
+            
+            
             db.conectar();
-
-            db.setPreparedStatement("call crearGrupo(?)");
+            
+            db.setPreparedStatement("call eliminarUsuario(?)");
             db.setPreparedVariables(new String[][]{
-                {"String", name}
+                {"int", id}
             });
-            ResultSet res = db.runPreparedQuery();
-
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>iSalon - Agregar Grupo</title>");
-            out.println("<script type='text/javascript' src='https://code.jquery.com/jquery-3.2.1.min.js'></script>");
-            out.println("<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>");
-            out.println("<link href='../../Materialize/materialize.css' rel='stylesheet' type='text/css'/>");
-            out.println("<script src='../../Materialize/materialize.js' type='text/javascript'></script>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<div class='container'>");
-
-            while (res.next()) {
-                out.println("<h2>");
-                out.println(res.getString("message"));
-                out.println("</h2>");
+            res = db.runPreparedQuery();
+            
+            while(res.next()) {
+                out.println("{");
+                out.println("\"isValid\": " + (res.getInt("isValid") == 1) + ", ");
+                out.println("\"message\": \"" + res.getString("message") + "\" ");
+                out.println("}");
             }
-
-            out.println("<a href='.' class='btn wave-effect'>");
-            out.println("<i class='material-icons prefix'>arrow_back</i>");
-            out.println("Regresar");
-            out.println("</a>");
-            out.println("</div>");
-
-            out.println("</body>");
-            out.println("</html>");
-
+            
             db.cierraConexion();
+            
         } catch (SQLException ex) {
-            Logger.getLogger(AgregarGrupo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EliminarGrupo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -129,7 +114,7 @@ public class AgregarGrupo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.getWriter().println("Cannot doGet!");
+        response.getWriter().println("No doGet!");
     }
 
     /**

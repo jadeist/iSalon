@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author A
  */
-@WebServlet(name = "agregar", urlPatterns = {"/admin/usuarios/agregar"})
+@WebServlet(name = "AgregarUsuario", urlPatterns = {"/admin/usuarios/agregar"})
 public class AgregarUsuario extends HttpServlet {
 
     /**
@@ -85,10 +85,10 @@ public class AgregarUsuario extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<title>iSalon - Agregar Usuario</title>");
-            out.println("<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>");
-            out.println("<link href='../../css/materialize.min.css' rel='stylesheet' type='text/css'/>");
             out.println("<script type='text/javascript' src='https://code.jquery.com/jquery-3.2.1.min.js'></script>");
-            out.println("<script src='../../js/materialize.min.js' type='text/javascript'></script>");
+            out.println("<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>");
+            out.println("<link href='../../Materialize/materialize.css' rel='stylesheet' type='text/css'/>");
+            out.println("<script src='../../Materialize/materialize.js' type='text/javascript'></script>");
             out.println("</head>");
             out.println("<body>");
             out.println("<div class='container'>");

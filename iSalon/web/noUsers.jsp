@@ -40,10 +40,12 @@
         <title>iSalon - Nuevo Usuario</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="css/general.css" rel="stylesheet" type="text/css"/>
-        <link href="css/materialize.min.css" rel="stylesheet" type="text/css"/>
+        <link href="css/Background.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="js/materialize.min.js" type="text/javascript"></script>
+        <!--Materialize-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="Materialize/materialize.js" type="text/javascript"></script>
+        <link href="Materialize/materialize.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div class="container">        

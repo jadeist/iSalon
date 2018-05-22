@@ -37,13 +37,11 @@
         <title>iSalon - Agregar Grupo</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="../../swal/sweetalert2.css" rel="stylesheet" type="text/css"/>
-        <link href="../../css/menu.css" rel="stylesheet" type="text/css"/>
-        <link href="../../css/materialize.min.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="../../swal/sweetalert2.js" type="text/javascript"></script>
-        <script src="../../js/materialize.min.js" type="text/javascript"></script>
+        <!--Materialize-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="../../Materialize/materialize.js" type="text/javascript"></script>
+        <link href="../../Materialize/materialize.css" rel="stylesheet" type="text/css"/>
 
         <script>
             $(document).ready(function () {
@@ -94,8 +92,8 @@
                 <div class="section">
                     <div class="input-field">
                         <i class="material-icons prefix">group_work</i>
-                        <label for="username">Nombre de Grupo</label>
-                        <input id="username" type="text" name="username" />
+                        <label for="name">Nombre de Grupo</label>
+                        <input id="username" type="text" name="name" />
                     </div>
                 </div>
 
@@ -108,6 +106,7 @@
             </form>
             <br>
             <a href="." class="btn-small waves-effect" >Regresar</a>
+            <br><br>
         </div>
     </body>
 </html>
