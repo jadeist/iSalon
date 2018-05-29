@@ -34,6 +34,8 @@
         <link href="Materialize/materialize.css" rel="stylesheet" type="text/css"/>
         
         <script>
+            var token = "";
+            var kerberosServer = 'http://192.168.20.97:4747/iSalon-secure/kerberos';
             window.addEventListener("message", recieveMessage, false);
             
             function recieveMessage(event) {
@@ -60,13 +62,35 @@
             if(inIframe()) {
                 window.parent.postMessage("'href': index.jsp, 'mode':'reload'", "*");
             }
+            
+            $(document).ready(function() {
+                $("#frmData").submit(function(ev) {
+                    ev.preventDefault();
+                    
+                    var data = {
+                        username: $("#username").val() ,
+                        pass: $("#pass").val()
+                    };
+                    
+                    $.post(kerberosServer, data, function(data, status) {
+                        console.log(data);
+                        if(typeof data !== 'undefined') {
+                            $("#hidToken").val(data);
+                            
+                        } else {
+                            console.log("error!");
+                            console.log(status);
+                        }
+                    });
+                });
+            });
         </script>
     </head>
     <body>
         <div class="container">
             <h1>Inicio de Sesión</h1>
             <%=noUsers ? "<a href='noUsers.jsp'>Ningún usuario detectado, crear uno nuevo?</a>" : ""%>
-            <form action="login" method="post">
+            <form id="frmData1" action="login" method="post">
                 <div class="input-field">
                     <i class="material-icons prefix">account_circle</i>
                     <label for="username">Usuario</label>
@@ -80,6 +104,9 @@
                 </div>
                 <br><br>
                 <input class="btn" type="submit" value="Login" />
+            </form>
+            <form id="frmLogin">
+                <input type="hidden" name="token" id="hidToken" />
             </form>
         </div>
     </body>

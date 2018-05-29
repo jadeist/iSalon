@@ -99,6 +99,7 @@
             }
 
             if (inIframe()) {
+                console.log();
                 window.location.href = $("#frameContent").get()[0].contentWindow.location.href;
             }
 

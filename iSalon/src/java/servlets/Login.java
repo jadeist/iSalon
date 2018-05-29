@@ -48,8 +48,19 @@ public class Login extends HttpServlet {
             String title = "";
             
             ResultSet res;
-            String username = request.getParameter("username");
-            int pass = request.getParameter("pass").hashCode();
+            String username;
+            int pass;
+            
+            // Sin kerberos
+            username = request.getParameter("username");
+            pass = request.getParameter("pass").hashCode();
+            // Con kerberos
+            /*
+            String token = request.getParameter("token");
+            
+            username = token.substring(0, token.indexOf("||"));
+            pass = token.substring(token.indexOf("||")).hashCode();
+            */
             
             Usuario user = new Usuario(username, pass);
             try {
