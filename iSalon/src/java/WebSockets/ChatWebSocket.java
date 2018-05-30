@@ -31,7 +31,13 @@ import org.json.JSONObject;
  */
 @ServerEndpoint("/WebSockets/chat")
 public class ChatWebSocket {
-
+    
+    private final String[][] prohibitedChars = new String[][] {
+        {"<", "&lt;"},
+        {">", "&gt;"},
+        {"{", "&#123;"},
+        {"}", "&#124;"},
+    };
     private static final Set<Session> sessions = Collections.synchronizedSet(new HashSet());
 
     public static void sendToAll(Object data) {
@@ -79,6 +85,7 @@ public class ChatWebSocket {
     public void onMessage(String message, Session session) {
         DateFormat format = new SimpleDateFormat("[dd/MM/yy hh:mm:ss]");
         
+        message = removeChars(message);
         JSONObject json = new JSONObject(message);
         String res = format.format(new Date()) + json.getString("name") + " -> " + json.getString("message");
         
@@ -108,5 +115,15 @@ public class ChatWebSocket {
         };
         
         saveToDB.run();
+    }
+    
+    private String removeChars(String data) {
+        int n = prohibitedChars.length;
+        
+        for (int i = 0; i<n; ++i) {
+            data = data.replaceAll(prohibitedChars[i][0], prohibitedChars[i][1]);
+        }
+        
+        return data;
     }
 }

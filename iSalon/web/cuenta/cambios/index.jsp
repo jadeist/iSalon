@@ -156,7 +156,7 @@
                 </div>
 
                 <br><br>
-                <input class="btn" type="submit" value="Cambiar datos"/>
+                <input class="btn" type="submit" value="Guardar cambios"/>
             </form>
         </div>
     </body>

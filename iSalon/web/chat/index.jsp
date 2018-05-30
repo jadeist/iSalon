@@ -64,22 +64,30 @@
                 $("#chatContent").html("");
             }
             
+            function sendMessage() {
+                var data = {
+                    name: $("#name").val(),
+                    message: $("#txtMessage").val()
+                };
+
+                $("#txtMessage").val("");
+                $("#txtMessage").resize();
+
+                webSocket.send(JSON.stringify(data));
+            }
+            
             $(document).ready(function() {
                 
                 $("#txtMessage").keypress(function(ev) {
                     if(ev.which === 13) {
                         ev.preventDefault();
-                        var data = {
-                            name: $("#name").val(),
-                            message: $("#txtMessage").val()
-                        };
-                        
-                        $("#txtMessage").val("");
-                        $("#txtMessage").resize();
-
-                        webSocket.send(JSON.stringify(data));
+                        sendMessage();
                     }
                 });
+                $("#btnSend").click(function() {
+                    sendMessage();
+                });
+                
                 $("#btnClear").click(function() {
                     clearMessages(); 
                 });
@@ -101,7 +109,7 @@
                         <label>Mensaje</label>
                     </div>
                     <br>
-                    <input class="btn" value="Enviar" type="button"/>
+                    <input id="btnSend" class="btn" value="Enviar" type="button"/>
 
                     <div class="section">
                         <input type="button" id="btnClear" class="btn" value="Limpiar mensajes" />
