@@ -64,7 +64,7 @@
             }
             
             $(document).ready(function() {
-                $("#frmData").submit(function(ev) {
+                $("#frmDat  a").submit(function(ev) {
                     ev.preventDefault();
                     
                     var data = {
@@ -72,16 +72,23 @@
                         pass: $("#pass").val()
                     };
                     
-                    $.post(kerberosServer, data, function(data, status) {
-                        console.log(data);
-                        if(typeof data !== 'undefined') {
-                            $("#hidToken").val(data);
-                            
-                        } else {
-                            console.log("error!");
-                            console.log(status);
+                    $.ajax({
+                        url: kerberosServer,
+                        type:'POST'
+                        data: data,
+                        dataType: "json",
+                        crossDomain: true,
+                        success: function(data, status) {
+                            console.log(data);
+                            if(typeof data !== 'undefined') {
+                                $("#hidToken").val(data);
+
+                            } else {
+                                console.log("error!");
+                                console.log(status);
+                            }
                         }
-                    });
+                    }
                 });
             });
         </script>
