@@ -34,9 +34,7 @@ public class ChatWebSocket {
     
     private final String[][] prohibitedChars = new String[][] {
         {"<", "&lt;"},
-        {">", "&gt;"},
-        {"{", "&#123;"},
-        {"}", "&#124;"},
+        {">", "&gt;"}
     };
     private static final Set<Session> sessions = Collections.synchronizedSet(new HashSet());
 

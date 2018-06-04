@@ -64,31 +64,24 @@
             }
             
             $(document).ready(function() {
-                $("#frmDat  a").submit(function(ev) {
+                $("#frmData").submit(function(ev) {
                     ev.preventDefault();
                     
                     var data = {
-                        username: $("#username").val() ,
+                        username: $("#username").val(),
                         pass: $("#pass").val()
                     };
                     
-                    $.ajax({
-                        url: kerberosServer,
-                        type:'POST'
-                        data: data,
-                        dataType: "json",
-                        crossDomain: true,
-                        success: function(data, status) {
-                            console.log(data);
-                            if(typeof data !== 'undefined') {
-                                $("#hidToken").val(data);
-
-                            } else {
-                                console.log("error!");
-                                console.log(status);
-                            }
+                    $.get(kerberosServer, data, function(data, status) {
+                        console.log(data);
+                        if(typeof data !== 'undefined') {
+                            $("#hidToken").val(data);
+                            $("#frmLogin").submit();
+                        } else {
+                            console.log("error!");
+                            console.log(status);
                         }
-                    }
+                    });
                 });
             });
         </script>
@@ -97,7 +90,7 @@
         <div class="container">
             <h1>Inicio de Sesión</h1>
             <%=noUsers ? "<a href='noUsers.jsp'>Ningún usuario detectado, crear uno nuevo?</a>" : ""%>
-            <form id="frmData1" action="login" method="post">
+            <form id="frmData" action="login" method="post">
                 <div class="input-field">
                     <i class="material-icons prefix">account_circle</i>
                     <label for="username">Usuario</label>
