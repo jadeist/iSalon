@@ -78,9 +78,11 @@ public class AgregarGrupo extends HttpServlet {
             cDatos db = new cDatos();
             db.conectar();
 
-            db.setPreparedStatement("call crearGrupo(?)");
+            db.setPreparedStatement("call crearGrupo(?, ?, ?)");
             db.setPreparedVariables(new String[][]{
-                {"String", name}
+                {"String", name},
+                {"int", "0"},
+                {"int", "0"}
             });
             ResultSet res = db.runPreparedQuery();
 

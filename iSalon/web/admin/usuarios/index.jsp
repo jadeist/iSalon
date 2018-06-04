@@ -35,7 +35,7 @@
     String[] tipos = null;
 
     db.conectar();
-    res = db.consulta("select * from tipoUsuario order by id asc");
+    res = db.consulta("call getTipos()");
     while(res.next()) {
         if (tipos == null) {
             tipos = new String[res.getInt("num")];
@@ -43,7 +43,6 @@
 
         tipos[res.getInt("id")] = res.getString("nombre");
     }
-    db.cierraConexion();
     
     String[] iconTipo = new String[] {
         "create",
@@ -52,9 +51,7 @@
         "star_border"
     };
         
-    res = db.consulta("select * from usuarios order by tipo asc");
-    
-    
+    res = db.consulta("select usuarios.id, usuarios.name, usuarios.tipo, grupos.nombre as grupo from usuarios	inner join catgrupousuario on catgrupousuario.idUsr = usuarios.id	inner join grupos on grupos.id = catgrupousuario.idGrp order by usuarios.tipo asc;");
 %>
 <!DOCTYPE html>
 <html>
@@ -153,6 +150,7 @@
                     <tr>
                         <td>Nombre</td>
                         <td>Tipo de usuario</td>
+                        <td>Grupo</td>
                         <td>Acciones</td>
                     </tr>
                 </thead>
@@ -166,7 +164,10 @@
                         out.println(tipos[res.getInt("tipo")]);
                         out.println("</td>");
                         out.println("<td>");
-                        out.println("<input class='hidId' type='hidden' value='" + res.getInt("id") + "' />");
+                        out.println(res.getString("grupo"));
+                        out.println("</td>");
+                        out.println("<td>");
+                        out.println("<input class='hidId' type='hidden' value='" + res.getInt("id") + "' />");  
                         out.println("<a class='waves-effect waves-light btn btnDel red darken-2' >Eliminar</a>");
                         out.println("</td>");
                         out.println("</tr>");

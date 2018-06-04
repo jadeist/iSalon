@@ -64,7 +64,7 @@
             }
             
             $(document).ready(function() {
-                $("#frmData").submit(function(ev) {
+                $("#frmDat a").submit(function(ev) {
                     ev.preventDefault();
                     
                     var data = {

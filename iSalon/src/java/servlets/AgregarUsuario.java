@@ -63,21 +63,41 @@ public class AgregarUsuario extends HttpServlet {
                     return;
                 }
             }
+            
+            // Validación
+            
+            if(
+                request.getParameter("username") == null ||
+                request.getParameter("name") == null ||
+                request.getParameter("pass") == null ||
+                request.getParameter("type") == null ||
+                request.getParameter("grp") == null ||
+                request.getParameter("grp").equals("-1")
+            ) {
+                request.setAttribute("preset", "fields");
+                request.setAttribute("redirect", "/iSalon/admin/usuarios/agregarDatos.jsp");
 
-            String username = request.getParameter("username") != null ? request.getParameter("username") : "";
-            String name = request.getParameter("name") != null ? request.getParameter("name") : "";
-            int pass = request.getParameter("pass") != null ? request.getParameter("pass").hashCode() : "1234".hashCode();
-            int type = request.getParameter("type") != null ? Integer.parseInt(request.getParameter("type")) : 0;
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+                return;
+            }
+
+            String username = request.getParameter("username");
+            String name = request.getParameter("name");
+            int pass = request.getParameter("pass").hashCode();
+            int type = Integer.parseInt(request.getParameter("type"));
+            int grp = Integer.parseInt(request.getParameter("grp"));
 
             cDatos db = new cDatos();
             db.conectar();
 
-            db.setPreparedStatement("call crearUsuario(?, ?, ?, ?)");
+            db.setPreparedStatement("call crearUsuario(?, ?, ?, ?, ?)");
             db.setPreparedVariables(new String[][]{
                 {"String", username},
                 {"String", name},
                 {"int", String.valueOf(pass)},
-                {"int", String.valueOf(type)}
+                {"int", String.valueOf(type)},
+                {"int", "0"}
             });
             ResultSet res = db.runPreparedQuery();
 

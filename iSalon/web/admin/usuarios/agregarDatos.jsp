@@ -95,40 +95,29 @@
                     <div class="input-field">
                         <i class="material-icons prefix">account_circle</i>
                         <label for="username">Nombre de Usuario</label>
-                        <input id="username" type="text" name="username" />
+                        <input id="username" type="text" name="username" required />
                     </div>
                     <div class="input-field">
                         <i class="material-icons prefix">face</i>
                         <label for="name">Nombre</label>
-                        <input id="name" type="text" name="name" />
+                        <input id="name" type="text" name="name" required />
                     </div>
                 </div>
                 
                 <div class="divider"></div>
                 <div class="section">
                     <div class="input-field">
-                        <select name="type">
+                        <select name="type" required >
                             <%
                                 cDatos db = new cDatos();
                                 ResultSet res;
-                                String[] tipos = null;
                                 
                                 db.conectar();
                                 res = db.consulta("select * from tipoUsuario order by id asc");
+                                
                                 while(res.next()) {
-                                    if (tipos == null) {
-                                        tipos = new String[res.getInt("num")];
-                                    }
-                                    
-                                    tipos[res.getInt("id")] = res.getString("nombre");
-                                }
-                                db.cierraConexion();
-                                
-                                
-                                int n = tipos.length;
-                                for(int i=0; i<n; ++i) {
-                                    out.println("<option value='" + i + "'>"
-                                        + tipos[i]
+                                    out.println("<option value='" + String.valueOf(res.getInt("id")) + "'>"
+                                        + res.getString("nombre")
                                         + "</option>");
                                 }
                             %>
@@ -136,17 +125,38 @@
                         <label>Selecciona el Tipo de Usuario</label>
                     </div>
                 </div>
+                        
+                <div class="divider"></div>
+                <div class="section">
+                    <div class="input-field">
+                        <select name="grp" required >
+                            <option selected disabled value="-1">Selecciona un grupo</option>
+                            <option id="optAll" disabled>Todos</option>
+                            <%
+                                res = db.consulta("select * from grupos;");
+                                while(res.next()) {
+                                    out.println("<option value='" + String.valueOf(res.getInt("id")) + "'>"
+                                        + res.getString("nombre")
+                                        + "</option>");
+                                }
+                                
+                                db.cierraConexion();
+                            %>
+                        </select>
+                        <label>Selecciona el Grupo</label>
+                    </div>
+                </div>
 
                 <div class="divider"></div>
                 <div class="section">
                     <div class="input-field">
                         <i class="material-icons prefix">vpn_key</i>
-                        <input type="password" id="pass1" />
+                        <input type="password" id="pass1" required />
                         <label for="pass1">Nueva Contraseña</label>
                     </div>
                     <div class="input-field">
                         <i class="material-icons prefix">done</i>
-                        <input class="validate" type="password" id="pass2" disabled name="pass" />
+                        <input class="validate" type="password" id="pass2" disabled name="pass" required />
                         <label for="pass2">Confirma tu contraseña</label>
                         <span class="helper-text"
                             data-error="Las contraseñas deben coincidir"

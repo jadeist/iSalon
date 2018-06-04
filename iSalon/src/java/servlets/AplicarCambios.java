@@ -65,6 +65,8 @@ public class AplicarCambios extends HttpServlet {
                 }
             }
             
+            // Falta validación
+            
             String name = request.getParameter("name") != null ? request.getParameter("name") : user.getNombre();
             String username = request.getParameter("username") != null ? request.getParameter("username") : user.getNombre();
             int pass = request.getParameter("pass") != null ? request.getParameter("pass").hashCode() : -1;
