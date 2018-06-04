@@ -4,6 +4,8 @@
     Author     : A
 --%>
 
+<%@page import="java.sql.ResultSet"%>
+<%@page import="database.cDatos"%>
 <%@page import="ctrl.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
@@ -107,13 +109,22 @@
                     <div class="input-field">
                         <select name="type">
                             <%
-                                String[] tipos = new String[] {
-                                    "Alumno",
-                                    "Profesor",
-                                    "Prefecto",
-                                    "Adminstrador"
-                                };
-
+                                cDatos db = new cDatos();
+                                ResultSet res;
+                                String[] tipos = null;
+                                
+                                db.conectar();
+                                res = db.consulta("select * from tipoUsuario order by id asc");
+                                while(res.next()) {
+                                    if (tipos == null) {
+                                        tipos = new String[res.getInt("num")];
+                                    }
+                                    
+                                    tipos[res.getInt("id")] = res.getString("nombre");
+                                }
+                                db.cierraConexion();
+                                
+                                
                                 int n = tipos.length;
                                 for(int i=0; i<n; ++i) {
                                     out.println("<option value='" + i + "'>"

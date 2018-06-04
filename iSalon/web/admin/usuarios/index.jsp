@@ -30,23 +30,29 @@
         }
     }
     
-    String[] tipos = new String[] {
-        "Alumno",
-        "Profesor",
-        "Prefecto",
-        "Adminstrador"
-    };
+    cDatos db = new cDatos();
+    ResultSet res;
+    String[] tipos = null;
+
+    db.conectar();
+    res = db.consulta("select * from tipoUsuario order by id asc");
+    while(res.next()) {
+        if (tipos == null) {
+            tipos = new String[res.getInt("num")];
+        }
+
+        tipos[res.getInt("id")] = res.getString("nombre");
+    }
+    db.cierraConexion();
+    
     String[] iconTipo = new String[] {
         "create",
         "book",
         "assignment",
         "star_border"
     };
-    
-    cDatos db = new cDatos();
-    db.conectar();
-    
-    ResultSet res = db.consulta("select * from usuarios order by tipo asc");
+        
+    res = db.consulta("select * from usuarios order by tipo asc");
     
     
 %>
