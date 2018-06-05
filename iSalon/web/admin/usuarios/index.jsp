@@ -134,10 +134,10 @@
                             int n = tipos.length;
                             for(int i=0; i<n; ++i) {
                                 out.println("<option selected value='" + i + "'>"
-                                        + tipos[i]
-                                        + "<i class='material-icons prefix'>"
-                                        + "</i>"
-                                        + "</option>");
+                                    + tipos[i]
+                                    + "<i class='material-icons prefix'>"
+                                    + "</i>"
+                                    + "</option>");
                             }
                         %>
                     </select>
