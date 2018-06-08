@@ -44,6 +44,7 @@ public class AgregarUsuario extends HttpServlet {
             HttpSession session = request.getSession();
 
             // Validacion de usuario
+            /*
             Usuario user = new Usuario(-1);
             if (session.getAttribute("user") == null) {
                 request.setAttribute("preset", "login");
@@ -65,7 +66,6 @@ public class AgregarUsuario extends HttpServlet {
             }
             
             // Validación
-            
             if(
                 request.getParameter("username") == null ||
                 request.getParameter("name") == null ||
@@ -81,7 +81,7 @@ public class AgregarUsuario extends HttpServlet {
                 dispatcher.forward(request, response);
                 return;
             }
-
+*/
             String username = request.getParameter("username");
             String name = request.getParameter("name");
             int pass = request.getParameter("pass").hashCode();
@@ -91,13 +91,12 @@ public class AgregarUsuario extends HttpServlet {
             cDatos db = new cDatos();
             db.conectar();
 
-            db.setPreparedStatement("call crearUsuario(?, ?, ?, ?, ?, ?)");
+            db.setPreparedStatement("call crearUsuario(?, ?, ?, ?, ?)");
             db.setPreparedVariables(new String[][]{
                 {"String", username},
                 {"String", name},
                 {"int", String.valueOf(pass)},
                 {"int", String.valueOf(type)},
-                {"int", "0"},
                 {"int", String.valueOf(grupo)}
             });
             ResultSet res = db.runPreparedQuery();

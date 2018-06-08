@@ -39,6 +39,7 @@
     db.setPreparedStatement("select menuContent.name, menuContent.link, menuContent.target, menuContent.icon from catMenuContent "
             + "inner join menuContent on catMenuContent.idMenu = menuContent.id "
             + "where catMenuContent.typeUsr = ? "
+            + "and menuContent.active = 1 "
             + "order by menuContent.priority desc");
     db.setPreparedVariables(new String[][]{
         {"int", String.valueOf(user.getTipo())}
