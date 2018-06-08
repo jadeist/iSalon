@@ -72,8 +72,24 @@
     db.conectar();
 
     for (int i = 0; i < 5; ++i) {
-        res = db.consulta("select  grupos.nombre as 'grupo',  salones.nombre as 'salon',  horarios.nombre as 'clase',  horarios.horaInicio, horarios.horaFinal, horarios.dia, horarios.color from horarios  inner join cathorariogrupo  on cathorariogrupo.idHor = horarios.id inner join cathorariosalon  on cathorariosalon.idHor = horarios.id   inner join salones  on salones.id = cathorariosalon.idSal inner join grupos  ON grupos.id = cathorariogrupo.idGrp   inner join catgrupousuario  on catgrupousuario.idGrp "
-                + "where catgrupousuario.idUsr = " + userId + "  and dia = " + i + "   order by horarios.horaInicio asc;");
+        res = db.consulta("select "
+                + "     grupos.nombre as 'grupo', "
+                + "     salones.nombre as 'salon', "
+                + "     horarios.nombre as 'clase', "
+                + "     horarios.horaInicio, "
+                + "     horarios.horaFinal, "
+                + "     horarios.dia, "
+                + "     horarios.color "
+                + " from horarios "
+                + "     inner join cathorariogrupo  on cathorariogrupo.idHor = horarios.id "
+                + "     inner join cathorariosalon  on cathorariosalon.idHor = horarios.id "
+                + "     inner join salones  on salones.id = cathorariosalon.idSal "
+                + "     inner join grupos  ON grupos.id = cathorariogrupo.idGrp "
+                + "     inner join catgrupousuario  on catgrupousuario.idGrp = cathorariogrupo.idGrp "
+                + " where catgrupousuario.idUsr = " + userId
+                + " and dia = " + i
+                + " order by horarios.horaInicio asc"
+        );
 
         while (res.next()) {
             horario[i] = AuxFunctions.fillArrayHorario(

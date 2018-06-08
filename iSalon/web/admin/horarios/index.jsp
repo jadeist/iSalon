@@ -97,6 +97,49 @@
                     updateTable(true);
                 });
                 
+                $(document).on('click', '.btnDel', function(ev) {
+                    var source = ev.target;
+                    var name = $(source).parent().parent().children(".fieldName").text();
+                    var grp = $(source).parent().parent().children(".fieldGroup").text();
+                    var hi = $(source).parent().parent().children(".fieldHi").text();
+                    var hf = $(source).parent().parent().children(".fieldHf").text();
+                    var salon = $(source).parent().parent().children(".fieldSalon").text();
+                    var message = 'Seguro de que quieres eliminar a: ' + name + ' (' + grp + '), [' + hi + ' - ' + hf + '], en ' + salon + '?';
+                    
+                    swal({
+                        title: "Advertencia",
+                        text: message,
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Si',
+                        cancelButtonText: 'No',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if(result) {
+                            console.log("Eliminación!");
+                            
+                            var data = {
+                                id: $(source).parent().children(".hidId").val()
+                            };
+                            $.post('eliminarHorario', data, function(data) {
+                                data = JSON.parse(data);
+                                
+                                swal({
+                                    title: data.message,
+                                    text: '',
+                                    type: (data.isValid ? 'success' : 'error')
+                                });
+                                
+                                if (data.isValid) {
+                                    $(source).parent().parent().remove();
+                                }
+                            });
+                        }
+                    });
+                });
+                
                 function updateTable(immediate) {
                     if(turnos === '' || periodos === '') {
                         return;
@@ -109,6 +152,7 @@
                             console.log("requesting...");
                             $.post('getTable', {request: data}, function(data, status) {
                                 $("#tableHorarios").html(data);
+                                $('table').tablesorter();
                             });
                         }, timeoutTime);
                     } else {
@@ -159,13 +203,14 @@
                 </div>
                 <table class="striped responsive-table">
                     <thead>
-                        <tr>
-                            <td>Grupo</td>
-                            <td>Materia</td>
-                            <td>Salón</td>
-                            <td>Hora Inicio</td>
-                            <td>Hora Final</td>
-                            <td>Dia</td>
+                        <tr class="row section">
+                            <td class="col s2" >Grupo</td>
+                            <td class="col s2" >Materia</td>
+                            <td class="col s2" >Salón</td>
+                            <td class="col s1" >Hora Inicio</td>
+                            <td class="col s1" >Hora Final</td>
+                            <td class="col s2" >Dia</td>
+                            <td class="col s2" >Acciones</td>
                         </tr>
                     </thead>
                     <tbody id="tableHorarios"></tbody>

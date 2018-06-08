@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               10.1.30-MariaDB - mariadb.org binary distribution
--- Server OS:                    Win32
--- HeidiSQL Version:             9.5.0.5196
+-- Versión del servidor:         10.1.30-MariaDB - mariadb.org binary distribution
+-- SO del servidor:              Win32
+-- HeidiSQL Versión:             9.5.0.5196
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -12,12 +12,12 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Dumping database structure for isalon
+-- Volcando estructura de base de datos para isalon
 DROP DATABASE IF EXISTS `isalon`;
 CREATE DATABASE IF NOT EXISTS `isalon` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `isalon`;
 
--- Dumping structure for procedure isalon.agregarClase
+-- Volcando estructura para procedimiento isalon.agregarClase
 DROP PROCEDURE IF EXISTS `agregarClase`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarClase`(in n nvarchar(250))
@@ -28,7 +28,7 @@ begin
 end//
 DELIMITER ;
 
--- Dumping structure for table isalon.catgrupousuario
+-- Volcando estructura para tabla isalon.catgrupousuario
 DROP TABLE IF EXISTS `catgrupousuario`;
 CREATE TABLE IF NOT EXISTS `catgrupousuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -41,14 +41,14 @@ CREATE TABLE IF NOT EXISTS `catgrupousuario` (
   CONSTRAINT `catgrupousuario_ibfk_2` FOREIGN KEY (`idGrp`) REFERENCES `grupos` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table isalon.catgrupousuario: ~1 rows (approximately)
+-- Volcando datos para la tabla isalon.catgrupousuario: ~1 rows (aproximadamente)
 DELETE FROM `catgrupousuario`;
 /*!40000 ALTER TABLE `catgrupousuario` DISABLE KEYS */;
 INSERT INTO `catgrupousuario` (`id`, `idUsr`, `idGrp`) VALUES
 	(2, 10, 1);
 /*!40000 ALTER TABLE `catgrupousuario` ENABLE KEYS */;
 
--- Dumping structure for table isalon.cathorariogrupo
+-- Volcando estructura para tabla isalon.cathorariogrupo
 DROP TABLE IF EXISTS `cathorariogrupo`;
 CREATE TABLE IF NOT EXISTS `cathorariogrupo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -59,23 +59,23 @@ CREATE TABLE IF NOT EXISTS `cathorariogrupo` (
   KEY `idGrp` (`idGrp`),
   CONSTRAINT `cathorariogrupo_ibfk_1` FOREIGN KEY (`idHor`) REFERENCES `horarios` (`id`),
   CONSTRAINT `cathorariogrupo_ibfk_2` FOREIGN KEY (`idGrp`) REFERENCES `grupos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
--- Dumping data for table isalon.cathorariogrupo: ~8 rows (approximately)
+-- Volcando datos para la tabla isalon.cathorariogrupo: ~8 rows (aproximadamente)
 DELETE FROM `cathorariogrupo`;
 /*!40000 ALTER TABLE `cathorariogrupo` DISABLE KEYS */;
 INSERT INTO `cathorariogrupo` (`id`, `idHor`, `idGrp`) VALUES
 	(13, 1, 1),
-	(14, 2, 1),
 	(15, 3, 1),
 	(16, 4, 1),
 	(17, 5, 1),
 	(18, 6, 1),
-	(19, 7, 5),
-	(20, 8, 4);
+	(20, 8, 4),
+	(21, 9, 1),
+	(22, 10, 1);
 /*!40000 ALTER TABLE `cathorariogrupo` ENABLE KEYS */;
 
--- Dumping structure for table isalon.cathorariosalon
+-- Volcando estructura para tabla isalon.cathorariosalon
 DROP TABLE IF EXISTS `cathorariosalon`;
 CREATE TABLE IF NOT EXISTS `cathorariosalon` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -86,22 +86,23 @@ CREATE TABLE IF NOT EXISTS `cathorariosalon` (
   KEY `idSal` (`idSal`),
   CONSTRAINT `cathorariosalon_ibfk_1` FOREIGN KEY (`idHor`) REFERENCES `horarios` (`id`),
   CONSTRAINT `cathorariosalon_ibfk_2` FOREIGN KEY (`idSal`) REFERENCES `salones` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
--- Dumping data for table isalon.cathorariosalon: ~7 rows (approximately)
+-- Volcando datos para la tabla isalon.cathorariosalon: ~8 rows (aproximadamente)
 DELETE FROM `cathorariosalon`;
 /*!40000 ALTER TABLE `cathorariosalon` DISABLE KEYS */;
 INSERT INTO `cathorariosalon` (`id`, `idHor`, `idSal`) VALUES
 	(13, 1, 1),
-	(14, 2, 1),
 	(15, 3, 1),
 	(16, 4, 1),
 	(17, 5, 1),
 	(18, 6, 1),
-	(20, 8, 3);
+	(20, 8, 3),
+	(21, 9, 3),
+	(22, 10, 2);
 /*!40000 ALTER TABLE `cathorariosalon` ENABLE KEYS */;
 
--- Dumping structure for table isalon.catmenucontent
+-- Volcando estructura para tabla isalon.catmenucontent
 DROP TABLE IF EXISTS `catmenucontent`;
 CREATE TABLE IF NOT EXISTS `catmenucontent` (
   `idRelMenuUsr` int(11) NOT NULL AUTO_INCREMENT,
@@ -114,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `catmenucontent` (
   CONSTRAINT `catmenucontent_ibfk_1` FOREIGN KEY (`idMenu`) REFERENCES `menucontent` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=latin1;
 
--- Dumping data for table isalon.catmenucontent: ~25 rows (approximately)
+-- Volcando datos para la tabla isalon.catmenucontent: ~25 rows (aproximadamente)
 DELETE FROM `catmenucontent`;
 /*!40000 ALTER TABLE `catmenucontent` DISABLE KEYS */;
 INSERT INTO `catmenucontent` (`idRelMenuUsr`, `idMenu`, `typeUsr`) VALUES
@@ -145,7 +146,7 @@ INSERT INTO `catmenucontent` (`idRelMenuUsr`, `idMenu`, `typeUsr`) VALUES
 	(87, 9, 3);
 /*!40000 ALTER TABLE `catmenucontent` ENABLE KEYS */;
 
--- Dumping structure for procedure isalon.crearGrupo
+-- Volcando estructura para procedimiento isalon.crearGrupo
 DROP PROCEDURE IF EXISTS `crearGrupo`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearGrupo`(
@@ -186,7 +187,7 @@ begin
 end//
 DELIMITER ;
 
--- Dumping structure for procedure isalon.crearSalon
+-- Volcando estructura para procedimiento isalon.crearSalon
 DROP PROCEDURE IF EXISTS `crearSalon`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearSalon`(
@@ -219,7 +220,7 @@ begin
 end//
 DELIMITER ;
 
--- Dumping structure for procedure isalon.crearUsuario
+-- Volcando estructura para procedimiento isalon.crearUsuario
 DROP PROCEDURE IF EXISTS `crearUsuario`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearUsuario`(
@@ -270,7 +271,7 @@ begin
 end//
 DELIMITER ;
 
--- Dumping structure for procedure isalon.editarUsuario
+-- Volcando estructura para procedimiento isalon.editarUsuario
 DROP PROCEDURE IF EXISTS `editarUsuario`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `editarUsuario`(in u nvarchar(250), in n nvarchar(250), in p int, in i int)
@@ -306,10 +307,14 @@ begin
 end//
 DELIMITER ;
 
--- Dumping structure for procedure isalon.eliminarGrupo
+-- Volcando estructura para procedimiento isalon.eliminarGrupo
 DROP PROCEDURE IF EXISTS `eliminarGrupo`;
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarGrupo`(in i int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarGrupo`(
+	IN `i` int
+
+
+)
 begin
 
 	declare num int;
@@ -321,9 +326,15 @@ begin
 		set message = "Grupo no existe!";
 		set num = 0;
 	else
-		delete from catgrupousuario where idGrp = i;
-		delete from grupos where id = i;
+		create temporary table tempHor as (
+			select idHor from cathorariogrupo where idGrp = i	
+		);
 	
+		delete from catgrupousuario where idGrp = i;
+		delete from cathorariogrupo where idGrp = i;
+		delete from horarios where id = (select idHor from tempHor);
+		delete from grupos where id = i;
+		
 		set message = "Grupo eliminado!";
 		set num = 1;
 	end if;
@@ -333,7 +344,38 @@ begin
 end//
 DELIMITER ;
 
--- Dumping structure for procedure isalon.eliminarUsuario
+-- Volcando estructura para procedimiento isalon.eliminarHorario
+DROP PROCEDURE IF EXISTS `eliminarHorario`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarHorario`(
+	IN `i` INT
+)
+    MODIFIES SQL DATA
+begin
+
+	declare num int;
+	declare message nvarchar(200);
+	
+	set num = (select count(*) from horarios where id = i);
+	
+	if num = 0 then
+		set message = "Clase no existe!";
+		set num = 0;
+	else
+		delete from cathorariogrupo where idHor = i;
+		delete from cathorariosalon where idHor = i;
+		delete from horarios where id = i;
+		
+		set message = "Clase eliminada!";
+		set num = 1;
+	end if;
+	
+	select message, num as isValid;
+
+end//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento isalon.eliminarUsuario
 DROP PROCEDURE IF EXISTS `eliminarUsuario`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarUsuario`(
@@ -362,7 +404,7 @@ begin
 end//
 DELIMITER ;
 
--- Dumping structure for procedure isalon.getTipos
+-- Volcando estructura para procedimiento isalon.getTipos
 DROP PROCEDURE IF EXISTS `getTipos`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getTipos`()
@@ -377,7 +419,7 @@ begin
 end//
 DELIMITER ;
 
--- Dumping structure for table isalon.grupohorarios
+-- Volcando estructura para tabla isalon.grupohorarios
 DROP TABLE IF EXISTS `grupohorarios`;
 CREATE TABLE IF NOT EXISTS `grupohorarios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -385,12 +427,12 @@ CREATE TABLE IF NOT EXISTS `grupohorarios` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table isalon.grupohorarios: ~0 rows (approximately)
+-- Volcando datos para la tabla isalon.grupohorarios: ~0 rows (aproximadamente)
 DELETE FROM `grupohorarios`;
 /*!40000 ALTER TABLE `grupohorarios` DISABLE KEYS */;
 /*!40000 ALTER TABLE `grupohorarios` ENABLE KEYS */;
 
--- Dumping structure for table isalon.grupos
+-- Volcando estructura para tabla isalon.grupos
 DROP TABLE IF EXISTS `grupos`;
 CREATE TABLE IF NOT EXISTS `grupos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -401,45 +443,44 @@ CREATE TABLE IF NOT EXISTS `grupos` (
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
--- Dumping data for table isalon.grupos: ~6 rows (approximately)
+-- Volcando datos para la tabla isalon.grupos: ~5 rows (aproximadamente)
 DELETE FROM `grupos`;
 /*!40000 ALTER TABLE `grupos` DISABLE KEYS */;
 INSERT INTO `grupos` (`id`, `nombre`, `periodo`, `turno`) VALUES
 	(1, '5IV6', 0, 0),
 	(3, '1IV5', 2, 1),
 	(4, '1IM1', 0, 0),
-	(5, '4IM9', 0, 0),
 	(6, '5IM6', 0, 0),
 	(7, '3IM6', 0, 0);
 /*!40000 ALTER TABLE `grupos` ENABLE KEYS */;
 
--- Dumping structure for table isalon.horarios
+-- Volcando estructura para tabla isalon.horarios
 DROP TABLE IF EXISTS `horarios`;
 CREATE TABLE IF NOT EXISTS `horarios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(300) CHARACTER SET utf8 NOT NULL DEFAULT 'SIN ASIGNAR',
+  `nombre` varchar(300) NOT NULL DEFAULT 'SIN ASIGNAR',
   `horaInicio` int(11) NOT NULL,
   `horaFinal` int(11) NOT NULL,
   `dia` int(11) NOT NULL DEFAULT '0',
-  `color` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT '#000000',
+  `color` varchar(10) NOT NULL DEFAULT '#000000',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
--- Dumping data for table isalon.horarios: ~8 rows (approximately)
+-- Volcando datos para la tabla isalon.horarios: ~8 rows (aproximadamente)
 DELETE FROM `horarios`;
 /*!40000 ALTER TABLE `horarios` DISABLE KEYS */;
 INSERT INTO `horarios` (`id`, `nombre`, `horaInicio`, `horaFinal`, `dia`, `color`) VALUES
 	(1, 'Fisica', 7, 9, 0, '#000000'),
-	(2, 'Fisica', 8, 10, 1, '#000000'),
 	(3, 'Fisica', 9, 11, 2, '#000000'),
 	(4, 'Fisica', 10, 12, 3, '#000000'),
 	(5, 'Fisica', 11, 13, 4, '#000000'),
 	(6, 'Integral', 12, 14, 2, '#000000'),
-	(7, 'Matematicas 1', 7, 15, 2, '#000000'),
-	(8, 'Matematicas 1', 7, 16, 4, '#000000');
+	(8, 'Matematicas 1', 7, 16, 4, '#000000'),
+	(9, 'Cálculo Integral', 7, 21, 2, '#000000'),
+	(10, 'FÃ­sica IV', 12, 14, 2, '#000000');
 /*!40000 ALTER TABLE `horarios` ENABLE KEYS */;
 
--- Dumping structure for procedure isalon.insertarHorario
+-- Volcando estructura para procedimiento isalon.insertarHorario
 DROP PROCEDURE IF EXISTS `insertarHorario`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarHorario`(
@@ -450,6 +491,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarHorario`(
 	IN `d` int
 ,
 	IN `s` VARCHAR(250)
+
 )
     COMMENT 'grupo, horaInicio, horaFinal, Materia, Dia, Salon'
 begin
@@ -482,10 +524,10 @@ begin
 		insert into cathorariosalon(idHor, idSal) values
 		(num, s);
 		
-		set message = 'Materia registrada';
+		set message = 'Clase registrada';
 		
 	else 
-		set message = 'Materia ya existe!';
+		set message = 'Clase ya existe!';
 		set num = -1;
 	end if;
 	
@@ -493,7 +535,7 @@ begin
 end//
 DELIMITER ;
 
--- Dumping structure for table isalon.materias
+-- Volcando estructura para tabla isalon.materias
 DROP TABLE IF EXISTS `materias`;
 CREATE TABLE IF NOT EXISTS `materias` (
   `id` int(11) NOT NULL,
@@ -501,12 +543,12 @@ CREATE TABLE IF NOT EXISTS `materias` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table isalon.materias: ~0 rows (approximately)
+-- Volcando datos para la tabla isalon.materias: ~0 rows (aproximadamente)
 DELETE FROM `materias`;
 /*!40000 ALTER TABLE `materias` DISABLE KEYS */;
 /*!40000 ALTER TABLE `materias` ENABLE KEYS */;
 
--- Dumping structure for table isalon.menucontent
+-- Volcando estructura para tabla isalon.menucontent
 DROP TABLE IF EXISTS `menucontent`;
 CREATE TABLE IF NOT EXISTS `menucontent` (
   `id` int(11) NOT NULL,
@@ -519,7 +561,7 @@ CREATE TABLE IF NOT EXISTS `menucontent` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table isalon.menucontent: ~10 rows (approximately)
+-- Volcando datos para la tabla isalon.menucontent: ~10 rows (aproximadamente)
 DELETE FROM `menucontent`;
 /*!40000 ALTER TABLE `menucontent` DISABLE KEYS */;
 INSERT INTO `menucontent` (`id`, `name`, `icon`, `link`, `target`, `priority`, `active`) VALUES
@@ -527,7 +569,7 @@ INSERT INTO `menucontent` (`id`, `name`, `icon`, `link`, `target`, `priority`, `
 	(1, 'Logout', 'exit_to_app', 'cuenta/logout.jsp', '_self', 0, 1),
 	(2, 'Usuarios', 'person', 'admin/usuarios/', 'content', 3, 1),
 	(3, 'Modificar Cuenta', 'settings', 'cuenta/cambios/', 'content', 1, 1),
-	(4, 'Horarios', 'border_all', 'horarios/', 'content', 2, 1),
+	(4, 'Horario', 'border_all', 'horarios/', 'content', 2, 1),
 	(5, 'Grupos', 'group', 'admin/grupos/', 'content', 3, 1),
 	(6, 'Chat', 'chat', 'chat/', 'content', 3, 1),
 	(7, 'Materias', 'library_books', 'materias/', 'content', 2, 1),
@@ -535,7 +577,7 @@ INSERT INTO `menucontent` (`id`, `name`, `icon`, `link`, `target`, `priority`, `
 	(9, 'Salones', 'place ', 'admin/salones/', 'content', 3, 1);
 /*!40000 ALTER TABLE `menucontent` ENABLE KEYS */;
 
--- Dumping structure for table isalon.messages
+-- Volcando estructura para tabla isalon.messages
 DROP TABLE IF EXISTS `messages`;
 CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -544,7 +586,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 
--- Dumping data for table isalon.messages: ~2 rows (approximately)
+-- Volcando datos para la tabla isalon.messages: ~2 rows (aproximadamente)
 DELETE FROM `messages`;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
 INSERT INTO `messages` (`id`, `message`, `fecha`) VALUES
@@ -552,7 +594,7 @@ INSERT INTO `messages` (`id`, `message`, `fecha`) VALUES
 	(59, '[29/05/18 07:36:46]Axel Treviño -> ya funciono', '2018-05-29 19:36:46');
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 
--- Dumping structure for table isalon.salones
+-- Volcando estructura para tabla isalon.salones
 DROP TABLE IF EXISTS `salones`;
 CREATE TABLE IF NOT EXISTS `salones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -560,7 +602,7 @@ CREATE TABLE IF NOT EXISTS `salones` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- Dumping data for table isalon.salones: ~3 rows (approximately)
+-- Volcando datos para la tabla isalon.salones: ~3 rows (aproximadamente)
 DELETE FROM `salones`;
 /*!40000 ALTER TABLE `salones` DISABLE KEYS */;
 INSERT INTO `salones` (`id`, `nombre`) VALUES
@@ -569,7 +611,7 @@ INSERT INTO `salones` (`id`, `nombre`) VALUES
 	(3, 'Usos Mútiples');
 /*!40000 ALTER TABLE `salones` ENABLE KEYS */;
 
--- Dumping structure for table isalon.tipousuario
+-- Volcando estructura para tabla isalon.tipousuario
 DROP TABLE IF EXISTS `tipousuario`;
 CREATE TABLE IF NOT EXISTS `tipousuario` (
   `id` int(11) NOT NULL,
@@ -579,7 +621,7 @@ CREATE TABLE IF NOT EXISTS `tipousuario` (
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table isalon.tipousuario: ~4 rows (approximately)
+-- Volcando datos para la tabla isalon.tipousuario: ~4 rows (aproximadamente)
 DELETE FROM `tipousuario`;
 /*!40000 ALTER TABLE `tipousuario` DISABLE KEYS */;
 INSERT INTO `tipousuario` (`id`, `nombre`, `icon`) VALUES
@@ -589,7 +631,7 @@ INSERT INTO `tipousuario` (`id`, `nombre`, `icon`) VALUES
 	(3, 'Administrador', 'star_border');
 /*!40000 ALTER TABLE `tipousuario` ENABLE KEYS */;
 
--- Dumping structure for table isalon.usuarios
+-- Volcando estructura para tabla isalon.usuarios
 DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -602,7 +644,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
--- Dumping data for table isalon.usuarios: ~9 rows (approximately)
+-- Volcando datos para la tabla isalon.usuarios: ~9 rows (aproximadamente)
 DELETE FROM `usuarios`;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 INSERT INTO `usuarios` (`id`, `username`, `name`, `pass`, `tipo`, `image`) VALUES
@@ -617,7 +659,7 @@ INSERT INTO `usuarios` (`id`, `username`, `name`, `pass`, `tipo`, `image`) VALUE
 	(44, 'jimmy', 'Jaime Minor Gomez', 96354, 1, NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 
--- Dumping structure for procedure isalon.validarUsuario
+-- Volcando estructura para procedimiento isalon.validarUsuario
 DROP PROCEDURE IF EXISTS `validarUsuario`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `validarUsuario`(in u nvarchar(250), in p int)

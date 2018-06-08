@@ -169,7 +169,7 @@
                         out.println(res.getString("grupo"));
                         out.println("</td>");
                         out.println("<td>");
-                        out.println("<input class='hidId' type='hidden' value='" + res.getInt("id") + "' />");  
+                        out.println("<input class='hidId' type='hidden' value='" + res.getInt("id") + "' />");
                         out.println("<a class='waves-effect waves-light btn btnDel red darken-2' >Eliminar</a>");
                         out.println("</td>");
                         out.println("</tr>");

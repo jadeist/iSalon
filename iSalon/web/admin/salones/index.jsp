@@ -77,7 +77,7 @@
                             var data = {
                                 id: $(source).parent().children(".hidId").val()
                             };
-                            $.post('eliminarGrupo', data, function(data) {
+                            $.post('eliminarSalon', data, function(data) {
                                 data = JSON.parse(data);
                                 
                                 swal({

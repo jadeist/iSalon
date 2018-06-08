@@ -42,10 +42,10 @@ public class cDatos {
         this.SQLiteDbPath = SQLiteDbPath;
     }
     public cDatos() {
-        //poner los datos apropiados
+        // Poner los datos apropiados
         this.usrBD = "root";
         this.passBD = "n0m3l0";
-        this.urlBD = "jdbc:mysql://127.0.0.1:3306/iSalon";
+        this.urlBD = "jdbc:mysql://127.0.0.1:3306/iSalon?useUnicode=true&characterEncoding=utf-8";
         
         // com.mysql.jdbc.Driver
         // org.sqlite.JDBC

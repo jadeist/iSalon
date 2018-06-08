@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author A
  */
-@WebServlet(name = "generarTablaHorarios", urlPatterns = {"/admin/horarios/getTable"})
-public class generarTablaHorarios extends HttpServlet {
+@WebServlet(name = "GenerarTablaHorarios", urlPatterns = {"/admin/horarios/getTable"})
+public class GenerarTablaHorarios extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -61,16 +61,17 @@ public class generarTablaHorarios extends HttpServlet {
             ResultSet res;
             
             db.conectar();
-            res = db.consulta("select 	grupos.nombre as 'grupo',  	salones.nombre as 'salon', 	horarios.nombre as 'clase',  	horarios.horaInicio, 	horarios.horaFinal, 	horarios.dia, 	horarios.color from horarios 	 	inner join cathorariogrupo  on cathorariogrupo.idHor = horarios.id 	inner join cathorariosalon  on cathorariosalon.idHor = horarios.id 	inner join salones  on salones.id = cathorariosalon.idSal 	inner join grupos  ON grupos.id = cathorariogrupo.idGrp 	inner join catgrupousuario  on catgrupousuario.idGrp  	order by horarios.horaInicio asc, horarios.dia;");
+            res = db.consulta("select 	grupos.nombre as 'grupo',  	salones.nombre as 'salon', 	horarios.nombre as 'clase',  	horarios.horaInicio, 	horarios.horaFinal, 	horarios.dia, 	horarios.color, horarios.id as horId       from horarios 	inner join cathorariogrupo  on cathorariogrupo.idHor = horarios.id 	inner join cathorariosalon  on cathorariosalon.idHor = horarios.id 	inner join salones  on salones.id = cathorariosalon.idSal 	inner join grupos  ON grupos.id = cathorariogrupo.idGrp 	inner join catgrupousuario  on catgrupousuario.idGrp  	order by horarios.horaInicio asc, horarios.dia;");
             
             while(res.next()) {
                 results.add(new String[] {
                     res.getString("grupo"),
                     res.getString("salon"),
                     res.getString("clase"),
-                    String.valueOf(res.getInt("horaInicio")),
-                    String.valueOf(res.getInt("horaFinal")),
-                    dias[res.getInt("dia")]
+                    String.valueOf(res.getInt("horaInicio")) + ":00",
+                    String.valueOf(res.getInt("horaFinal")) + ":00",
+                    dias[res.getInt("dia")],
+                    String.valueOf(res.getInt("horId"))
                 });
             }
             
@@ -79,31 +80,36 @@ public class generarTablaHorarios extends HttpServlet {
             db.cierraConexion();
             
             for(String[] i : items) {
-                tableHTML += "<tr>";
+                tableHTML += "<tr class='row section'>";
 
                 // Grupo
-                tableHTML += "<td>";
+                tableHTML += "<td class='fieldGroup col s2'>";
                 tableHTML += i[0];
                 tableHTML += "</td>";
                 // Materia
-                tableHTML += "<td>";
+                tableHTML += "<td class='fieldName col s2'>";
                 tableHTML += i[2];
                 tableHTML += "</td>";
                 // Salon
-                tableHTML += "<td>";
+                tableHTML += "<td class='fieldSalon col s2'>";
                 tableHTML += i[1];
                 tableHTML += "</td>";
                 // Hora Inicio
-                tableHTML += "<td>";
+                tableHTML += "<td class='fieldHi col s1'>";
                 tableHTML += i[3];
                 tableHTML += "</td>";
                 // Hora Final
-                tableHTML += "<td>";
+                tableHTML += "<td class='fieldHf col s1'>";
                 tableHTML += i[4];
                 tableHTML += "</td>";
                 // Dia
-                tableHTML += "<td>";
+                tableHTML += "<td class='fieldDia col s2'>";
                 tableHTML += i[5];
+                tableHTML += "</td>";
+                // Acciones
+                tableHTML += "<td class='fieldAcc col s2'>";
+                tableHTML += "<input class='hidId' type='hidden' value='" + i[6] + "' />";
+                tableHTML += "<a class='waves-effect waves-light btn btnDel red darken-2' >Eliminar</a>";
                 tableHTML += "</td>";
                 
                 tableHTML += "</tr>";
@@ -111,7 +117,7 @@ public class generarTablaHorarios extends HttpServlet {
             
             out.print(tableHTML);
         } catch (SQLException ex) {
-            Logger.getLogger(generarTablaHorarios.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GenerarTablaHorarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
