@@ -39,6 +39,8 @@
             window.addEventListener("message", recieveMessage, false);
             
             function recieveMessage(event) {
+                console.log("Message recieved!");
+                console.log(event);
                 var data = JSON.parse(event.data);
                 
                 switch(data.mode) {

@@ -6,24 +6,28 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    String title = request.getAttribute("title") != null ? (String) request.getAttribute("title") : "Error";
-    String message = request.getAttribute("message") != null ? (String)  request.getAttribute("message") : "Hubo algún error";
-    String redirect = request.getAttribute("redirect") != null ? (String)  request.getAttribute("redirect") : "/iSalon/";
-    String type = request.getAttribute("type") != null ? (String) request.getAttribute("type") : "error";
+    String title, message, redirect, type;
     String preset = request.getAttribute("preset") != null ? (String) request.getAttribute("preset") : "";
-    
-    System.out.println(request.getAttribute("preset") == null);
     
     if (preset.equals("adminRights")) {
         title = "Permisos Necesarios!";
         message = "Permisos de administrador necesarios";
+        type = "error";
     } else if(preset.equals("login")) {
         title = "Sesión no Iniciada";
         message = "Iniciar sesión para continuar";
+        type = "error";
+        redirect = "/iSalon/";
     } else if(preset.equals("fields")) {
         title = "Datos insuficientes";
         message = "Todos los datos deberán de proporcionarse";
+        type = "error";
     }
+    
+    title = request.getAttribute("title") != null ? (String) request.getAttribute("title") : "Error";
+    message = request.getAttribute("message") != null ? (String)  request.getAttribute("message") : "Hubo algún error";
+    redirect = request.getAttribute("redirect") != null ? (String)  request.getAttribute("redirect") : "/iSalon/";
+    type = request.getAttribute("type") != null ? (String) request.getAttribute("type") : "error";
 %>
 <!DOCTYPE html>
 <html>
@@ -47,8 +51,11 @@
                     text: "<%=message%>",
                     type: "<%=type%>"
                 }).then(function() {
-                    window.parent.postMessage("'href': '<%=redirect%>', 'mode':'reload'", "*");
-                    window.location = "<%=redirect%>";
+                    if('<%=redirect%>' === '/iSalon/') {
+                        window.parent.postMessage("'href': '<%=redirect%>', 'mode':'reload'", "*");
+                    } else {
+                        window.location = "<%=redirect%>";
+                    }
                 });
             });
         </script>

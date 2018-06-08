@@ -129,9 +129,8 @@
                 <div class="divider"></div>
                 <div class="section">
                     <div class="input-field">
-                        <select name="grp" required >
+                        <select name="grupo" required >
                             <option selected disabled value="-1">Selecciona un grupo</option>
-                            <option id="optAll" disabled>Todos</option>
                             <%
                                 res = db.consulta("select * from grupos;");
                                 while(res.next()) {
@@ -160,7 +159,8 @@
                         <label for="pass2">Confirma tu contraseña</label>
                         <span class="helper-text"
                             data-error="Las contraseñas deben coincidir"
-                            data-success="Las contraseñas coinciden"></span>
+                            data-success="Las contraseñas coinciden"
+                        ></span>
                     </div>
                 </div>
 

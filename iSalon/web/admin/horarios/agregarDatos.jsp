@@ -52,38 +52,10 @@
             $(document).ready(function () {
                 // Initialization
                 $('select').formSelect();
-                $('.timepicker').timepicker();
-                
-                $("form#formAddUser").submit(function (ev) {
-                    if ($("input#pass1").val() !== $("input#pass2").val()) {
-                        ev.preventDefault();
-                    }
-                });
-
-                $("input#pass1").keyup((ev) => {
-                    if ($(ev.target).val() !== "") {
-                        $("input#pass2").prop("disabled", false);
-                    } else {
-                        $("input#pass2").prop("disabled", true);
-                    }
-                });
-                $("input#pass2").keyup(() => {
-                    if ($("input#pass1").val() === $("input#pass2").val()) {
-                        $("input#pass2").removeClass("invalid");
-                        $("input#pass2").addClass("valid");
-                    } else {
-                        $("input#pass2").removeClass("valid");
-                        $("input#pass2").addClass("invalid");
-                    }
-                });
-                $("input#pass1, input#pass2").blur(() => {
-                    if ($("input#pass1").val() === $("input#pass2").val()) {
-                        $("input#pass2").removeClass("invalid");
-                        $("input#pass2").addClass("valid");
-                    } else {
-                        $("input#pass2").removeClass("valid");
-                        $("input#pass2").addClass("invalid");
-                    }
+                $('.timepicker').timepicker({
+                    showClearBtn: true,
+                    defaultTime: '07:00',
+                    twelveHour: false
                 });
             });
         </script>
@@ -97,26 +69,39 @@
                 <div class="divider"></div>
                 <div class="section">
                     <div class="input-field">
-                        <i class="material-icons prefix"></i>
+                        <i class="material-icons prefix">book</i>
                         <label for="username">Materia</label>
-                        <input id="username" type="text" name="username" required />
-                    </div>
-                    <div class="input-field">
-                        <i class="material-icons prefix"></i>
-                        <label for="name">Salon</label>
-                        <input id="name" type="text" name="name" required />
+                        <input id="materia" type="text" name="name" required />
                     </div>
                 </div>
                         
                 <div class="divider"></div>
                 <div class="section">
                     <div class="input-field">
-                        <select name="grp" required >
-                            <option selected disabled value="-1">Selecciona un grupo</option>
-                            <option id="optAll" disabled>Todos</option>
+                        <i class="material-icons prefix">place</i>
+                        <select name="salon">
+                            <option>Selecciona un salon</option>
                             <%
                                 db.conectar();
-                                res = db.consulta("select * from grupos;");
+                                res = db.consulta("select * from salones order by nombre asc;");
+                                while(res.next()) {
+                                    out.println("<option value='" + String.valueOf(res.getInt("id")) + "'>"
+                                        + res.getString("nombre")
+                                        + "</option>");
+                                }
+                            %>
+                        </select>
+                        <label for="name">Selectiona el Salon</label>
+                    </div>
+                </div>
+                
+                <div class="divider"></div>
+                <div class="section">
+                    <div class="input-field">
+                        <select name="grupo" required >
+                            <option selected disabled value="-1">Selecciona un grupo</option>
+                            <%
+                                res = db.consulta("select * from grupos order by nombre asc;");
                                 while(res.next()) {
                                     out.println("<option value='" + String.valueOf(res.getInt("id")) + "'>"
                                         + res.getString("nombre")
@@ -132,22 +117,33 @@
 
                 <div class="divider"></div>
                 <div class="section">
+                    <i class="material-icons">access_time</i>
                     <div class="input-field">
-                        <i class="material-icons prefix"></i>
                         <input class="timepicker" type="text" name="hi" required />
                         <label for="pass1">Hora Inicio</label>
                     </div>
                     <div class="input-field">
-                        <i class="material-icons prefix"></i>
                         <input class="timepicker" type="text" name="hf" required />
                         <label for="pass2">Hora Final</label>
+                    </div>
+                    <div class="input-field">
+                        <i class="material-icons prefix">date_range</i>
+                        <select name="dia" required >
+                            <option selected disabled value="-1">Selecciona un día</option>
+                            <option value="0">Lunes</option>
+                            <option value="1">Martes</option>
+                            <option value="2">Miércoles</option>
+                            <option value="3">Jueves</option>
+                            <option value="4">Viernes</option>
+                        </select>
+                        <label>Selecciona el Día</label>
                     </div>
                 </div>
 
                 <div class="divider"></div>
                 <button class="btn" type="submit" >
                     <i class="material-icons left">add_circle</i>
-                    Agregar Usuario
+                    Agregar Clase
                 </button>
 
             </form>

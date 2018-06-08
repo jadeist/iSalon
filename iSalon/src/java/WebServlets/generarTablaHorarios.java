@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+package WebServlets;
 
 import database.cDatos;
 import java.io.IOException;
@@ -70,8 +70,7 @@ public class generarTablaHorarios extends HttpServlet {
                     res.getString("clase"),
                     String.valueOf(res.getInt("horaInicio")),
                     String.valueOf(res.getInt("horaFinal")),
-                    dias[res.getInt("dia")],
-                    res.getString("color")
+                    dias[res.getInt("dia")]
                 });
             }
             
@@ -104,7 +103,7 @@ public class generarTablaHorarios extends HttpServlet {
                 tableHTML += "</td>";
                 // Dia
                 tableHTML += "<td>";
-                tableHTML += i[4];
+                tableHTML += i[5];
                 tableHTML += "</td>";
                 
                 tableHTML += "</tr>";

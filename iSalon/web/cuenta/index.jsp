@@ -119,16 +119,14 @@
         <div class="wrapper">
             <nav class="nav-extended">
                 <div class="nav-wrapper">
-                    <a href="#" class="brand-logo">iSalon</a>
+                    <div class="nav-content hide-on-med-and-down">
+                        <h5>iSalon - <%=user.getNombre()%>, <%=tipos[user.getTipo()]%></h5>
+                    </div>
                     <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <%=links%>
                     </ul>
-                </div>
-
-                <div class="nav-content hide-on-med-and-down">
-                    <h5><%=user.getNombre()%>, <%=tipos[user.getTipo()]%></h5>
                 </div>
             </nav>
             <ul id="mobile-menu" class="sidenav" style="overflow-y: auto">
@@ -143,6 +141,7 @@
                     </div>
                 </li>
                 <%=links%>
+                <br><br><br><br><br>
             </ul>
             <a href="index.jsp" target="frameContent"></a>
             <iframe id="frameContent" name="content" class="frameCuenta" src="inicio.jsp"></iframe>

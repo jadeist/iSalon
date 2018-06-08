@@ -45,11 +45,11 @@
         Viernes     7 - 20
      */
     String[][] horario = new String[][]{
-        {"", "", "", "", "", "", "", "", "", "", "", "", ""},
-        {"", "", "", "", "", "", "", "", "", "", "", "", ""},
-        {"", "", "", "", "", "", "", "", "", "", "", "", ""},
-        {"", "", "", "", "", "", "", "", "", "", "", "", ""},
-        {"", "", "", "", "", "", "", "", "", "", "", "", ""}
+        {"", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+        {"", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+        {"", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+        {"", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+        {"", "", "", "", "", "", "", "", "", "", "", "", "", ""}
     };
 
     String[] horas = new String[]{
@@ -65,7 +65,8 @@
         "16 - 17",
         "17 - 18",
         "18 - 19",
-        "19 - 20"
+        "19 - 20",
+        "20 - 21"
     };
 
     db.conectar();
@@ -75,11 +76,11 @@
                 + "where catgrupousuario.idUsr = " + userId + "  and dia = " + i + "   order by horarios.horaInicio asc;");
 
         while (res.next()) {
-            horario[i] = AuxFunctions.fillArray(
+            horario[i] = AuxFunctions.fillArrayHorario(
                     horario[i],
-                    res.getString("clase") + " -[" + res.getString("salon") + "]",
-                    res.getInt("horaInicio"),
-                    res.getInt("horaFinal")
+                    res.getString("clase") + " - [" + res.getString("salon") + "]",
+                    res.getInt("horaInicio") - 7,
+                    res.getInt("horaFinal") - 7
             );
         }
     }
@@ -116,7 +117,7 @@
                 <tbody>
                     <%
                         int n = 5;
-                        int m = 13;
+                        int m = 14;
                         String[][] tableRows = new String[m][n];
 
                         for (int i = 0; i < n; ++i) {

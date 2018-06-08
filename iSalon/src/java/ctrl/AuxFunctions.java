@@ -11,7 +11,7 @@ package ctrl;
  */
 public class AuxFunctions {
     
-    public static String[] fillArray(String[] array, String item, int start, int end) {
+    public static String[] fillArrayHorario(String[] array, String item, int start, int end) {
         if(start > end) {
             int aux = start;
             start = end;
@@ -19,7 +19,11 @@ public class AuxFunctions {
         }
         
         for(int i=start; i<end; ++i) {
-            array[i] = item;
+            if(array[i].equals("")) {
+                array[i] = item;
+            } else {
+                array[i] = "<div class='blue lighten-3'>" + array[i] + "<br>" + item + "</div>";
+            }
         }
         
         return array;

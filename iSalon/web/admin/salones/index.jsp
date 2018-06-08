@@ -33,7 +33,7 @@
     cDatos db = new cDatos();
     db.conectar();
     
-    ResultSet res = db.consulta("select * from grupos order by nombre asc");
+    ResultSet res = db.consulta("select * from salones order by nombre asc");
     
     
 %>
@@ -41,7 +41,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>iSalon - Grupos</title>
+        <title>iSalon - Salones</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -108,12 +108,12 @@
     </head>
     <body>
         <div class="container">
-            <h2>Grupos</h2>
+            <h2>Salones</h2>
 
             <table class="highlight">
                 <thead>
                     <tr>
-                        <td>Nombre de Grupo</td>
+                        <td>Nombre de Salon</td>
                     </tr>
                 </thead>
                 <%
@@ -135,8 +135,8 @@
             <br><br><br>
             
             <div class="fixed-action-btn">
-                <a href="agregarGrupo.jsp" class="btn-floating btn-large waves-effect waves-light blue" >
-                    <i class="material-icons">group_add</i>
+                <a href="agregarDatos.jsp" class="btn-floating btn-large waves-effect waves-light blue" >
+                    <i class="material-icons">add_circle</i>
                 </a>
             </div>
         </div>

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+package WebServlets;
 
 import ctrl.Usuario;
 import java.io.IOException;
@@ -71,8 +71,8 @@ public class AgregarUsuario extends HttpServlet {
                 request.getParameter("name") == null ||
                 request.getParameter("pass") == null ||
                 request.getParameter("type") == null ||
-                request.getParameter("grp") == null ||
-                request.getParameter("grp").equals("-1")
+                request.getParameter("grupo") == null ||
+                request.getParameter("grupo").equals("-1")
             ) {
                 request.setAttribute("preset", "fields");
                 request.setAttribute("redirect", "/iSalon/admin/usuarios/agregarDatos.jsp");
@@ -86,18 +86,19 @@ public class AgregarUsuario extends HttpServlet {
             String name = request.getParameter("name");
             int pass = request.getParameter("pass").hashCode();
             int type = Integer.parseInt(request.getParameter("type"));
-            int grp = Integer.parseInt(request.getParameter("grp"));
+            int grupo = Integer.parseInt(request.getParameter("grupo"));
 
             cDatos db = new cDatos();
             db.conectar();
 
-            db.setPreparedStatement("call crearUsuario(?, ?, ?, ?, ?)");
+            db.setPreparedStatement("call crearUsuario(?, ?, ?, ?, ?, ?)");
             db.setPreparedVariables(new String[][]{
                 {"String", username},
                 {"String", name},
                 {"int", String.valueOf(pass)},
                 {"int", String.valueOf(type)},
-                {"int", "0"}
+                {"int", "0"},
+                {"int", String.valueOf(grupo)}
             });
             ResultSet res = db.runPreparedQuery();
 

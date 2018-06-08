@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+package WebServlets;
 
 import ctrl.Usuario;
-import database.cDatos;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -25,8 +24,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author A
  */
-@WebServlet(name = "EliminarGrupo", urlPatterns = {"/admin/usuarios/EliminarGrupo"})
-public class EliminarGrupo extends HttpServlet {
+@WebServlet(name = "Login", urlPatterns = {"/login"})
+public class Login extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,63 +41,50 @@ public class EliminarGrupo extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HttpSession session = request.getSession();
-
-            // Validacion de usuario
-            Usuario user = new Usuario(-1);
-            if (session.getAttribute("user") == null) {
-                request.setAttribute("preset", "login");
-
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
-                dispatcher.forward(request, response);
-                return;
-            } else {
-                user = new Usuario((Integer) session.getAttribute("user"));
-                user.validarUsuarioId();
-
-                if (!(user.isValid() && user.getTipo() == 3)) {
-                    request.setAttribute("preset", "adminRights");
-
+            boolean isValid = false;
+            int id = -1;
+            int type = 0;
+            String message = "";
+            String title = "";
+            
+            ResultSet res;
+            String username;
+            int pass;
+            
+            // Sin kerberos
+            username = request.getParameter("username");
+            pass = request.getParameter("pass").hashCode();
+            // Con kerberos
+            /*
+            String token = request.getParameter("token");
+            
+            username = token.substring(0, token.indexOf("||"));
+            pass = token.substring(token.indexOf("||")).hashCode();
+            */
+            
+            Usuario user = new Usuario(username, pass);
+            try {
+                user.validarUsuarioCred();
+                
+                if(user.isValid()) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("user", user.getId());
+                    
+                    response.sendRedirect("cuenta/");
+                } else {
+                    request.setAttribute("title", "Credenciales incorrectas");
+                    request.setAttribute("message", "Intenta nuevamente");
+                    request.setAttribute("redirect", ".");
+                    request.setAttribute("type", "warning");
+                    
+                    
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                     dispatcher.forward(request, response);
-                    return;
                 }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            // Inicio
-            
-            if (request.getParameter("id") == null) {
-                request.setAttribute("preset", "fields");
-
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
-                dispatcher.forward(request, response);
-                return;
-            }
-                    
-            cDatos db = new cDatos();
-            ResultSet res;
-            String id = request.getParameter("id");
-            
-            
-            db.conectar();
-            
-            db.setPreparedStatement("call eliminarUsuario(?)");
-            db.setPreparedVariables(new String[][]{
-                {"int", id}
-            });
-            res = db.runPreparedQuery();
-            
-            while(res.next()) {
-                out.println("{");
-                out.println("\"isValid\": " + (res.getInt("isValid") == 1) + ", ");
-                out.println("\"message\": \"" + res.getString("message") + "\" ");
-                out.println("}");
-            }
-            
-            db.cierraConexion();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(EliminarGrupo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -114,7 +100,7 @@ public class EliminarGrupo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.getWriter().println("No doGet!");
+        response.sendRedirect(".");
     }
 
     /**

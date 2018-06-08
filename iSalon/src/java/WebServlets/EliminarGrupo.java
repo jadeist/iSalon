@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+package WebServlets;
 
 import ctrl.Usuario;
 import database.cDatos;
@@ -25,8 +25,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author A
  */
-@WebServlet(name = "EliminarUsuarios", urlPatterns = {"/admin/usuarios/eliminarUsuario"})
-public class EliminarUsuario extends HttpServlet {
+@WebServlet(name = "EliminarGrupo", urlPatterns = {"/admin/grupos/eliminarGrupo"})
+public class EliminarGrupo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -82,7 +82,7 @@ public class EliminarUsuario extends HttpServlet {
             
             db.conectar();
             
-            db.setPreparedStatement("call eliminarUsuario(?)");
+            db.setPreparedStatement("call eliminarGrupo(?)");
             db.setPreparedVariables(new String[][]{
                 {"int", id}
             });
@@ -98,7 +98,7 @@ public class EliminarUsuario extends HttpServlet {
             db.cierraConexion();
             
         } catch (SQLException ex) {
-            Logger.getLogger(EliminarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EliminarGrupo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

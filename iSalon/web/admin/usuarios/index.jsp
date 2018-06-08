@@ -105,7 +105,9 @@
                                     type: (data.isValid ? 'success' : 'error')
                                 });
                                 
-                                $(source).parent().parent().remove();
+                                if (data.isValid) {
+                                    $(source).parent().parent().remove();
+                                }
                             });
                         }
                     });

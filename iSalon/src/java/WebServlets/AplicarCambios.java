@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+package WebServlets;
 
 import ctrl.Usuario;
+import database.cDatos;
 import java.io.IOException;
 import java.io.PrintWriter;
-import database.cDatos;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -25,8 +25,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author A
  */
-@WebServlet(name = "AgregarGrupo", urlPatterns = {"/admin/grupos/agregar"})
-public class AgregarGrupo extends HttpServlet {
+@WebServlet(name = "AplicarCambios", urlPatterns = {"/cuenta/cambios/aplicarCambios"})
+public class AplicarCambios extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,9 +42,10 @@ public class AgregarGrupo extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
-
+            
             // Validacion de usuario
             Usuario user = new Usuario(-1);
+
             if (session.getAttribute("user") == null) {
                 request.setAttribute("preset", "login");
 
@@ -55,67 +56,60 @@ public class AgregarGrupo extends HttpServlet {
                 user = new Usuario((Integer) session.getAttribute("user"));
                 user.validarUsuarioId();
 
-                if (!(user.isValid() && user.getTipo() == 3)) {
-                    request.setAttribute("preset", "adminRights");
+                if (!user.isValid()) {
+                    request.setAttribute("preset", "login");
 
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
                     dispatcher.forward(request, response);
                     return;
                 }
             }
-
-            // Inicio
-            if (request.getParameter("name") == null) {
-                request.setAttribute("preset", "fields");
-
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
-                dispatcher.forward(request, response);
-                return;
-            }
-
-            String name = request.getParameter("name");
-
+            
+            // Falta validación
+            
+            String name = request.getParameter("name") != null ? request.getParameter("name") : user.getNombre();
+            String username = request.getParameter("username") != null ? request.getParameter("username") : user.getNombre();
+            int pass = request.getParameter("pass") != null ? request.getParameter("pass").hashCode() : -1;
+            int id = user.getTipo() == 3 ?
+                    request.getParameter("id") != null ?
+                        Integer.parseInt(request.getParameter("id"))
+                        : user.getId()
+                    : user.getId();
+            
             cDatos db = new cDatos();
+            
             db.conectar();
-
-            db.setPreparedStatement("call crearGrupo(?, ?, ?)");
-            db.setPreparedVariables(new String[][]{
+            
+            db.setPreparedStatement("call editarUsuario(?, ?, ?, ?)");
+            db.setPreparedVariables(new String[][] {
+                {"String", username},
                 {"String", name},
-                {"int", "0"},
-                {"int", "0"}
+                {"int", String.valueOf(pass)},
+                {"int", String.valueOf(id)}
             });
+            
             ResultSet res = db.runPreparedQuery();
-
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>iSalon - Agregar Grupo</title>");
-            out.println("<script type='text/javascript' src='https://code.jquery.com/jquery-3.2.1.min.js'></script>");
-            out.println("<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>");
-            out.println("<link href='../../Materialize/materialize.css' rel='stylesheet' type='text/css'/>");
-            out.println("<script src='../../Materialize/materialize.js' type='text/javascript'></script>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<div class='container'>");
-
-            while (res.next()) {
-                out.println("<h2>");
-                out.println(res.getString("message"));
-                out.println("</h2>");
+            String output = "";
+            
+            while(res.next()) {
+                if(res.getInt("isValid") == 1) {
+                    output = "{"
+                            + "\"type\": \"success\", "
+                            + "\"message\": \"" + res.getString("message") + "\" "
+                            + "}";
+                } else {
+                    output = "{"
+                            + "\"type\": \"error\", "
+                            + "\"message\": \"" + res.getString("message") + "\" "
+                            + "}";
+                }
             }
-
-            out.println("<a href='.' class='btn wave-effect'>");
-            out.println("<i class='material-icons prefix'>arrow_back</i>");
-            out.println("Regresar");
-            out.println("</a>");
-            out.println("</div>");
-
-            out.println("</body>");
-            out.println("</html>");
-
             db.cierraConexion();
+            
+            out.println(output);
+            
         } catch (SQLException ex) {
-            Logger.getLogger(AgregarGrupo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AplicarCambios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

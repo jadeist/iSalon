@@ -43,14 +43,31 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="../../Materialize/materialize.js" type="text/javascript"></script>
         <link href="../../Materialize/materialize.css" rel="stylesheet" type="text/css"/>
+        <!--Table Sorter-->
+        <link href="../../css/theme.materialize.min.css" rel="stylesheet" type="text/css"/>
+        <script src="../../js/jquery.tablesorter.combined.js" type="text/javascript"></script>
         
         <script>
             $(document).ready(function() {
                 // Initialization
                 $('select').formSelect();
+                $('table').tablesorter();
+                /*
+                    {
+                        theme: 'materialize',
+                        widthFixed: true,
+                        widgets: [ "filter", "zebra" ],
+                        widgetOptions: {
+                            zebra: [ "even", "odd" ],
+                            filter_reset: 'filterReset'
+                    }
+                }
+                */
                 
                 var turnos = "";
                 var periodos = "";
+                var requestTimer;
+                var timeoutTime = 5000;
                 
                 $("#selTurno").change(function(ev) {
                     var aux = $(ev.target).val();
@@ -63,7 +80,7 @@
                     if(aux.length !== 0) {
                         $("#selPeriodo").prop("disabled", false);
                         $('#selPeriodo').formSelect();
-                        updateTable();
+                        updateTable(false);
                     }
                 });
                 $("#selPeriodo").change(function(ev) {
@@ -74,21 +91,33 @@
                         periodos += aux[i];
                     }
                     
-                    updateTable();
+                    updateTable(false);
+                });
+                $("#btnGetData").click(function() {
+                    updateTable(true);
                 });
                 
-                function updateTable() {
+                function updateTable(immediate) {
                     if(turnos === '' || periodos === '') {
                         return;
                     }
                     var data = turnos + "||" + periodos;
-
-                    console.log(data);
-
-                    $.post('getTable', {request: data}, function(data, status) {
-                        $("#tableHorarios").html(data);
-                    });
-
+                    
+                    if(!immediate) {
+                        clearTimeout(requestTimer);
+                        requestTimer = setTimeout(function() {
+                            console.log("requesting...");
+                            $.post('getTable', {request: data}, function(data, status) {
+                                $("#tableHorarios").html(data);
+                            });
+                        }, timeoutTime);
+                    } else {
+                        clearTimeout(requestTimer);
+                        $.post('getTable', {request: data}, function(data, status) {
+                            $("#tableHorarios").html(data);
+                            $('table').tablesorter();
+                        });
+                    }
                 }
             });
         </script>
@@ -118,15 +147,22 @@
                     </select>
                     <label>Selecciona periodo</label>
                 </div>
+                <div class="row">
+                    <a id="btnGetData" class="btn waves-effect waves-block col s4 offset-s8" >Obtener datos</a>
+                </div>
             </div>
             
             <div class="divider"></div>
             <div class="section">
-                <table>
+                <div class="row">
+                    <a class="filterReset btn waves-effect waves-block col s3 hide" >Reiniciar filtros</a>
+                </div>
+                <table class="striped responsive-table">
                     <thead>
                         <tr>
                             <td>Grupo</td>
                             <td>Materia</td>
+                            <td>Salón</td>
                             <td>Hora Inicio</td>
                             <td>Hora Final</td>
                             <td>Dia</td>
